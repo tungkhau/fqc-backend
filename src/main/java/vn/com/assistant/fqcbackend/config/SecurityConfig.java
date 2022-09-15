@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import vn.com.assistant.fqcbackend.Utils.JwtTokenUtil;
 import vn.com.assistant.fqcbackend.filter.CustomAuthorizationFilter;
+import vn.com.assistant.fqcbackend.service.TokenService;
 import vn.com.assistant.fqcbackend.service.UserDetailServiceImp;
 
 import java.util.Arrays;
@@ -40,9 +40,10 @@ public class SecurityConfig {
             return configuration;
         });
         http.csrf().disable();
+        http.authorizeRequests().antMatchers("/api/login").permitAll();
+        http.authorizeRequests().antMatchers("/auth/customers").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().authenticated();
         http.headers().contentSecurityPolicy("script-src 'self'");
         http.logout().logoutUrl("/api/logout").invalidateHttpSession(true);
         http.addFilterBefore(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

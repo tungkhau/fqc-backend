@@ -13,7 +13,8 @@ import vn.com.assistant.fqcbackend.Utils.JwtTokenUtil;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialRequestDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialResponseDTO;
-import vn.com.assistant.fqcbackend.entity.UserDetailsImpl;
+import vn.com.assistant.fqcbackend.entity.Token;
+import vn.com.assistant.fqcbackend.entity.UserCredential;
 
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final Environment env;
+    private final TokenService tokenService;
 
     @Override
     public ResponseBodyDTO login(UserCredentialRequestDTO requestDTO) {
@@ -35,12 +37,14 @@ public class AuthServiceImpl implements AuthService{
 
             String token = jwtTokenUtil.generateToken(authentication);
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            UserCredential userDetails = (UserCredential) authentication.getPrincipal();
 
             String role = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
 
             UserCredentialResponseDTO responseDTO =
                     new UserCredentialResponseDTO(userDetails.getId(), userDetails.getCode(), token, role);
+            tokenService.save(new Token(responseDTO.getUserCode(), responseDTO.getToken()));
+
             return new ResponseBodyDTO(env.getProperty("login.success"), "OK", responseDTO);
         }
         return new ResponseBodyDTO("Đăng nhập ko thành công", "UNAUTHORIZED", null);
