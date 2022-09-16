@@ -25,7 +25,7 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public List<CustomerResponseDTO> fetch() {
-        List<Customer> customerList = customerRepository.findAll();
+        List<Customer> customerList = customerRepository.findAllByOrderByCreatedTimeDesc();
         return CustomerMapper.INSTANCE.listCustomerToListCustomerResponseDTO(customerList);
     }
 

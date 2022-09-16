@@ -1,6 +1,7 @@
 package vn.com.assistant.fqcbackend.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -39,6 +41,11 @@ public class User implements UserDetails {
 
     @Column(name = "active", nullable = false)
     private boolean active = true;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time", updatable = false)
+    private Date createdTime;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

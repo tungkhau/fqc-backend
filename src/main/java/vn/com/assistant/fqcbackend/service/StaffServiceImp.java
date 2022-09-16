@@ -30,7 +30,7 @@ public class StaffServiceImp implements StaffService {
 
     @Override
     public List<StaffResponseDTO> fetch() {
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findAllByOrderByCreatedTimeDesc();
         return StaffMapper.INSTANCE.listUserToListStaffResponseDTO(userList);
     }
 
