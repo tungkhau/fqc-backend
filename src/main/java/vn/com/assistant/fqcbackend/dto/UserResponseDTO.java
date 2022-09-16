@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCredentialResponseDTO {
-    private Long id;
+public class UserResponseDTO {
+    private String id;
     private String code;
     private String token;
     private String role;

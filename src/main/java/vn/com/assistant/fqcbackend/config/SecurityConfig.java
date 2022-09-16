@@ -39,8 +39,7 @@ public class SecurityConfig {
             return configuration;
         });
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/api/login").permitAll();
-        http.authorizeRequests().antMatchers("/auth/customers").permitAll();
+        http.authorizeRequests().antMatchers("/auth/login").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().contentSecurityPolicy("script-src 'self'");
@@ -51,14 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/webjars/**",
-                "/csrf",
-                "/swagger-ui.html",
-                "/error");
+        return (web) -> web.ignoring().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**","/staffs/**");
     }
 
     @Bean
@@ -81,7 +73,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

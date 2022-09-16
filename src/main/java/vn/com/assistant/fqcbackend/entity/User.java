@@ -1,6 +1,7 @@
 package vn.com.assistant.fqcbackend.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,13 +14,17 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
+@RequiredArgsConstructor
 @AllArgsConstructor
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code"),
+        @UniqueConstraint(name = "name", columnNames = "name")})
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     @Column(name = "code", nullable = false)
     private String code;
