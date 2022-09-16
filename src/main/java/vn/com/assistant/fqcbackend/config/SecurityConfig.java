@@ -40,7 +40,8 @@ public class SecurityConfig {
         });
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/auth/login").permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+        //TODO Disabled authen
+//        http.authorizeRequests().anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().contentSecurityPolicy("script-src 'self'");
         http.logout().logoutUrl("/api/logout").invalidateHttpSession(true);
@@ -50,7 +51,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**","/staffs/**");
+        return (web) -> web.ignoring().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
     }
 
     @Bean

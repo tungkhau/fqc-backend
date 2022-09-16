@@ -19,7 +19,7 @@ import java.util.List;
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class CustomerController {
     private final Environment env;
-    
+
     private final CustomerService customerService;
 
 
@@ -42,6 +42,13 @@ public class CustomerController {
     public ResponseBodyDTO update(@Valid @RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable String customerId) {
         customerService.update(customerRequestDTO, customerId);
         return new ResponseBodyDTO(env.getProperty("customer.update"), "OK", null);
+    }
+
+    @DeleteMapping(value = "/customers/{customerId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseBodyDTO delete(@PathVariable String customerId) {
+        customerService.delete(customerId);
+        return new ResponseBodyDTO(env.getProperty("customer.delete"), "OK", null);
     }
 
 }

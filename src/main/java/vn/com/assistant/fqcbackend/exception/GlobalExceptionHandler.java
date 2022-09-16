@@ -49,7 +49,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseBodyDTO dataIntegrityViolationException(DataIntegrityViolationException ex) {
         String constraint = ((ConstraintViolationException) ex.getCause()).getConstraintName();
-        System.out.println(constraint);
         return new ResponseBodyDTO(constraint + " đã tồn tại", "INVALID", null);
     }
 
