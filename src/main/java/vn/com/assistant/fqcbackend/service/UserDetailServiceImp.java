@@ -19,8 +19,8 @@ public class UserDetailServiceImp implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserCredential userCredential = _repository.findByCode(username);
-        if (userCredential != null){
+        if (userCredential != null) {
             return userCredential;
-        }else throw new UnauthorizedException("Username " + username + " not found ");
+        } else throw new UnauthorizedException("Username " + username + " not found ");
     }
 }

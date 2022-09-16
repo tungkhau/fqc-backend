@@ -10,10 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import vn.com.assistant.fqcbackend.Utils.JwtTokenUtil;
-import vn.com.assistant.fqcbackend.entity.Token;
-import vn.com.assistant.fqcbackend.exception.UnauthorizedException;
-import vn.com.assistant.fqcbackend.service.TokenService;
+
+import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

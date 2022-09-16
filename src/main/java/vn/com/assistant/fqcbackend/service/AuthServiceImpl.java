@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import vn.com.assistant.fqcbackend.Utils.JwtTokenUtil;
+import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialRequestDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialResponseDTO;

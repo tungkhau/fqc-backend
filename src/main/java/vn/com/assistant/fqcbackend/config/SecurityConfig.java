@@ -16,10 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import vn.com.assistant.fqcbackend.Utils.JwtTokenUtil;
 import vn.com.assistant.fqcbackend.filter.CustomAuthorizationFilter;
-import vn.com.assistant.fqcbackend.service.TokenService;
 import vn.com.assistant.fqcbackend.service.UserDetailServiceImp;
+import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
 
 import java.util.Arrays;
 
