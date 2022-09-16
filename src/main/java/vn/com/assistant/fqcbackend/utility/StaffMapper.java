@@ -17,7 +17,6 @@ public interface StaffMapper extends MapStructMapper {
 
     User staffRequestDTOtoUser(StaffRequestDTO staffRequestDTO);
 
-
     @Mapping(target = "code", ignore = true)
     void updateUserFromStaffRequestDTO(StaffRequestDTO staffRequestDTO, @MappingTarget User user);
 }

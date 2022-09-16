@@ -10,8 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
-import vn.com.assistant.fqcbackend.dto.UserCredentialRequestDTO;
-import vn.com.assistant.fqcbackend.dto.UserCredentialResponseDTO;
+import vn.com.assistant.fqcbackend.dto.UserRequestDTO;
+import vn.com.assistant.fqcbackend.dto.UserResponseDTO;
 import vn.com.assistant.fqcbackend.entity.Token;
 import vn.com.assistant.fqcbackend.entity.User;
 import vn.com.assistant.fqcbackend.utility.JwtTokenUtility;
@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService{
     private final TokenService tokenService;
 
     @Override
-    public ResponseBodyDTO login(UserCredentialRequestDTO requestDTO) {
+    public ResponseBodyDTO login(UserRequestDTO requestDTO) {
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(requestDTO.getCode(), requestDTO.getPassword());
         Authentication authentication = authManager.authenticate(authenticationToken);
@@ -41,8 +41,8 @@ public class AuthServiceImpl implements AuthService{
 
             String role = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
 
-            UserCredentialResponseDTO responseDTO =
-                    new UserCredentialResponseDTO(userDetails.getId(), userDetails.getCode(), token, role);
+            UserResponseDTO responseDTO =
+                    new UserResponseDTO(userDetails.getId(), userDetails.getCode(), token, role);
             tokenService.save(new Token(responseDTO.getCode(), responseDTO.getToken()));
 
             return new ResponseBodyDTO(env.getProperty("login.success"), "OK", responseDTO);
