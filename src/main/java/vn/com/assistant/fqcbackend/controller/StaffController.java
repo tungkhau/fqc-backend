@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class StaffController {
     private final StaffService staffService;

@@ -24,13 +24,12 @@ public class StaffServiceImp implements StaffService {
     private String defaultPassword;
     private final UserRepository userRepository;
     private final Environment env;
-
     private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public List<StaffResponseDTO> fetch() {
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findAllByOrderByCreatedTimeDesc();
         return StaffMapper.INSTANCE.listUserToListStaffResponseDTO(userList);
     }
 
