@@ -17,8 +17,7 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code"),
-        @UniqueConstraint(name = "name", columnNames = "name")})
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code")})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "system-uuid")

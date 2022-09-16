@@ -2,6 +2,7 @@ package vn.com.assistant.fqcbackend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class StaffServiceImp implements StaffService {
 
     @Value("${defaultPassword}")
