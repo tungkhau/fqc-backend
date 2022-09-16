@@ -52,7 +52,7 @@ public class StaffServiceTests {
 
         assertThat(capturedCustomer)
                 .usingRecursiveComparison()
-                .ignoringFields("id")
+                .ignoringFields("id", "")
                 .isEqualTo(user);
     }
 
