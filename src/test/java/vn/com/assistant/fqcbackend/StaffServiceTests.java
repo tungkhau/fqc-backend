@@ -15,8 +15,6 @@ import vn.com.assistant.fqcbackend.repository.UserRepository;
 import vn.com.assistant.fqcbackend.service.StaffServiceImp;
 import vn.com.assistant.fqcbackend.utility.StaffMapper;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -56,6 +54,7 @@ public class StaffServiceTests {
                 .isEqualTo(user);
     }
 
+
     @Test
     void createFailedCodeDuplicated(){
         //given
@@ -72,7 +71,6 @@ public class StaffServiceTests {
         verify(userRepository, never()).save(any());
 
     }
-
 
     private StaffRequestDTO genMockStaffRequest(){
         StaffRequestDTO requestDTO = new StaffRequestDTO();
