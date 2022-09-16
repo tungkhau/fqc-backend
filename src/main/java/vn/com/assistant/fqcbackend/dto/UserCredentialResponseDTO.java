@@ -5,15 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCredentialResponseDTO {
-    private Long userId;
-    private String userCode;
+    private Long id;
+    private String code;
     private String token;
     private String role;
 }

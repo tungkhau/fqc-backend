@@ -24,11 +24,17 @@ public class UserCredential implements UserDetails {
     @Column(name = "code", nullable = false)
     private String code;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "encrypted_password", nullable = false)
     private String encryptedPassword;
 
     @Column(name = "role", nullable = false)
     private String role;
+
+    @Column(name = "active", nullable = false)
+    private boolean active = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

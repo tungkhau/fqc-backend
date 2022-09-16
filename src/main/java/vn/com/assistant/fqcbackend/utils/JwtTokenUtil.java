@@ -36,10 +36,10 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String generateToken(Authentication authen) {
+    public String generateToken(Authentication authentication) {
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expiration * 60 * 1000 * 24 * 60);
-        UserCredential userDetails = (UserCredential) authen.getPrincipal();
+        UserCredential userDetails = (UserCredential) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)

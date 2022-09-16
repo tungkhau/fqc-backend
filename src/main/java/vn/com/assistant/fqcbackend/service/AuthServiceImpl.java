@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService{
 
             UserCredentialResponseDTO responseDTO =
                     new UserCredentialResponseDTO(userDetails.getId(), userDetails.getCode(), token, role);
-            tokenService.save(new Token(responseDTO.getUserCode(), responseDTO.getToken()));
+            tokenService.save(new Token(responseDTO.getCode(), responseDTO.getToken()));
 
             return new ResponseBodyDTO(env.getProperty("login.success"), "OK", responseDTO);
         }
