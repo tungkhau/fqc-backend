@@ -9,12 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialRequestDTO;
 import vn.com.assistant.fqcbackend.dto.UserCredentialResponseDTO;
 import vn.com.assistant.fqcbackend.entity.Token;
-import vn.com.assistant.fqcbackend.entity.UserCredential;
+import vn.com.assistant.fqcbackend.entity.User;
+import vn.com.assistant.fqcbackend.utility.JwtTokenUtility;
 
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authManager;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtility jwtTokenUtility;
     private final Environment env;
     private final TokenService tokenService;
 
@@ -35,9 +35,9 @@ public class AuthServiceImpl implements AuthService{
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = jwtTokenUtil.generateToken(authentication);
+            String token = jwtTokenUtility.generateToken(authentication);
 
-            UserCredential userDetails = (UserCredential) authentication.getPrincipal();
+            User userDetails = (User) authentication.getPrincipal();
 
             String role = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
 

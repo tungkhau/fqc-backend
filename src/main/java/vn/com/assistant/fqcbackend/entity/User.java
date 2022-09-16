@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-public class UserCredential implements UserDetails {
+public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

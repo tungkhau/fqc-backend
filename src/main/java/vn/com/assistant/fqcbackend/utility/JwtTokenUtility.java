@@ -1,6 +1,5 @@
-package vn.com.assistant.fqcbackend.Utils;
+package vn.com.assistant.fqcbackend.utility;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.entity.Token;
-import vn.com.assistant.fqcbackend.entity.UserCredential;
+import vn.com.assistant.fqcbackend.entity.User;
 import vn.com.assistant.fqcbackend.service.TokenService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -20,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class JwtTokenUtil implements Serializable {
+public class JwtTokenUtility implements Serializable {
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
@@ -37,10 +35,10 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String generateToken(Authentication authen) {
+    public String generateToken(Authentication authentication) {
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + expiration * 60 * 1000 * 24 * 60);
-        UserCredential userDetails = (UserCredential) authen.getPrincipal();
+        User userDetails = (User) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)
@@ -62,12 +60,10 @@ public class JwtTokenUtil implements Serializable {
         for (Token tkn: tokenList) {
             if (tkn.getValue().equals(token)) {
                 isValidToken = true;
+                break;
             }
         }
         if (!isValidToken) throw new Exception("Token khong ton tai");
     }
 
-    public Claims getClaims(final String token) {
-        return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
-    }
 }

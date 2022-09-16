@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import vn.com.assistant.fqcbackend.filter.CustomAuthorizationFilter;
 import vn.com.assistant.fqcbackend.service.UserDetailServiceImp;
-import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
+import vn.com.assistant.fqcbackend.utility.JwtTokenUtility;
 
 import java.util.Arrays;
 
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final UserDetailServiceImp userDetailsService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtility jwtTokenUtility;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -77,7 +77,7 @@ public class SecurityConfig {
 
     @Bean
     public CustomAuthorizationFilter customAuthorizationFilter() {
-        return new CustomAuthorizationFilter(jwtTokenUtil, userDetailsService);
+        return new CustomAuthorizationFilter(jwtTokenUtility, userDetailsService);
     }
 
     @Bean

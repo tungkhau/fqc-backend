@@ -10,8 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import vn.com.assistant.fqcbackend.utils.JwtTokenUtil;
+import vn.com.assistant.fqcbackend.utility.JwtTokenUtility;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -29,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtility jwtTokenUtility;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -38,9 +37,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
-                    if (StringUtils.hasText(token) && jwtTokenUtil.validateToken(token)) {
+                    if (StringUtils.hasText(token) && jwtTokenUtility.validateToken(token)) {
                         //get username from token
-                        String username = jwtTokenUtil.getUsernameFromJwt(token);
+                        String username = jwtTokenUtility.getUsernameFromJwt(token);
                         //get userDetail
                         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                         if (userDetails != null) {

@@ -6,21 +6,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vn.com.assistant.fqcbackend.entity.UserCredential;
+import vn.com.assistant.fqcbackend.entity.User;
 import vn.com.assistant.fqcbackend.exception.UnauthorizedException;
-import vn.com.assistant.fqcbackend.repository.UserCredentialRepository;
+import vn.com.assistant.fqcbackend.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailServiceImp implements UserDetailsService {
-    private final UserCredentialRepository _repository;
+    private final UserRepository _repository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserCredential userCredential = _repository.findByCode(username);
-        if (userCredential != null) {
-            return userCredential;
+        User user = _repository.findByCode(username);
+        if (user != null) {
+            return user;
         } else throw new UnauthorizedException("Username " + username + " not found ");
     }
 }
