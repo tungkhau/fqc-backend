@@ -1,5 +1,6 @@
 package vn.com.assistant.fqcbackend.utils;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,7 @@ public class JwtTokenUtil implements Serializable {
         if (!isValidToken) throw new Exception("Token khong ton tai");
     }
 
-//    public Claims getClaims(final String token) {
-//        return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
-//    }
+    public Claims getClaims(final String token) {
+        return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
+    }
 }
