@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
@@ -19,6 +17,7 @@ import vn.com.assistant.fqcbackend.repository.UserRepository;
 import vn.com.assistant.fqcbackend.service.StaffServiceImp;
 import vn.com.assistant.fqcbackend.utility.StaffMapper;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -112,7 +111,7 @@ public class StaffServiceTests {
     }
 
     private User genMockStaff(){
-        return new User(UUID.randomUUID().toString(),"STAFF", "Nguyen Van B", "12345", "STAFF", false);
+        return new User(UUID.randomUUID().toString(),"STAFF", "Nguyen Van B", "12345", "STAFF", false,new Date());
     }
 
 }
