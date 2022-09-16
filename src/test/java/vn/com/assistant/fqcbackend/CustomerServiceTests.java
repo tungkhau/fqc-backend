@@ -41,7 +41,7 @@ public class CustomerServiceTests {
     @Test
     void canFetch() {
         customerService.fetch();
-        verify(customerRepository).findAll();
+        verify(customerRepository).findAllByOrderByCreatedTimeDesc();
     }
 
     @Test
