@@ -1,23 +1,31 @@
 package vn.com.assistant.fqcbackend.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
+import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
 import vn.com.assistant.fqcbackend.service.StaffService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class StaffController {
     private final StaffService staffService;
 
     private final Environment env;
 
-    public StaffController(StaffService staffService, Environment env) {
-        this.staffService = staffService;
-        this.env = env;
+    @GetMapping(value = "/staffs")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public ResponseBodyDTO fetch() {
+        List<StaffResponseDTO> staffResponseDTOList = staffService.fetch();
+        return new ResponseBodyDTO(null, "ACCEPTED", staffResponseDTOList);
     }
 
     @PostMapping(value = "/staffs")

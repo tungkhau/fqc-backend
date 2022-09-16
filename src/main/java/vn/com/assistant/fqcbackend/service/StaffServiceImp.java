@@ -1,16 +1,21 @@
 package vn.com.assistant.fqcbackend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
+import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
 import vn.com.assistant.fqcbackend.entity.User;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.UserRepository;
 import vn.com.assistant.fqcbackend.utility.StaffMapper;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class StaffServiceImp implements StaffService {
 
     @Value("${defaultPassword}")
@@ -21,10 +26,10 @@ public class StaffServiceImp implements StaffService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public StaffServiceImp(UserRepository userRepository, Environment env, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.env = env;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    public List<StaffResponseDTO> fetch() {
+        List<User> userList = userRepository.findAll();
+        return StaffMapper.INSTANCE.listUserToListStaffResponseDTO(userList);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class StaffServiceImp implements StaffService {
     @Override
     public void update(StaffRequestDTO staffRequestDTO, String staffId) {
         User user = userRepository.findById(staffId).orElseThrow(() -> new InvalidException(env.getProperty("staff.notExisted")));
-        StaffMapper.INSTANCE.updateUserFromStaffRequestDTO(staffRequestDTO,user);
+        StaffMapper.INSTANCE.updateUserFromStaffRequestDTO(staffRequestDTO, user);
         userRepository.save(user);
     }
 

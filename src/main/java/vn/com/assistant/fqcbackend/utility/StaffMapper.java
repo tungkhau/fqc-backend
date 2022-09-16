@@ -8,12 +8,16 @@ import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
 import vn.com.assistant.fqcbackend.entity.User;
 
+import java.util.List;
+
 
 @Mapper(componentModel = "spring")
 public interface StaffMapper extends MapStructMapper {
     StaffMapper INSTANCE = Mappers.getMapper(StaffMapper.class);
 
     StaffResponseDTO userToStaffResponseDTO(User user);
+
+    List<StaffResponseDTO> listUserToListStaffResponseDTO(List<User> userList);
 
     User staffRequestDTOtoUser(StaffRequestDTO staffRequestDTO);
 

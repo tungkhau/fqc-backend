@@ -1,7 +1,9 @@
 package vn.com.assistant.fqcbackend.entity;
 
 public enum Role {
-    ADMIN,
     STAFF,
-    MANAGER
+    MANAGER,
+    SPECIALIST,
+    VIEWER,
+    ADMIN,
 }
