@@ -24,7 +24,6 @@ public class StaffServiceImp implements StaffService {
     private String defaultPassword;
     private final UserRepository userRepository;
     private final Environment env;
-
     private final PasswordEncoder passwordEncoder;
 
 
