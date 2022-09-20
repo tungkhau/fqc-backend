@@ -51,19 +51,4 @@ public class Customer {
     @Column(name = "created_time", updatable = false)
     private Date createdTime;
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", address='" + address + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", colorList=" + colorList +
-                ", fabricList=" + fabricList +
-                ", createdTime=" + createdTime +
-                '}';
-    }
 }
