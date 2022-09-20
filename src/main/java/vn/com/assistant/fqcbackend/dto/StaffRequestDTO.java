@@ -2,7 +2,7 @@ package vn.com.assistant.fqcbackend.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.com.assistant.fqcbackend.entity.Role;
+import vn.com.assistant.fqcbackend.entity.enums.Role;
 
 @Setter
 @Getter

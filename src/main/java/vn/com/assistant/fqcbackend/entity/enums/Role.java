@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.entity;
+package vn.com.assistant.fqcbackend.entity.enums;
 
 public enum Role {
     STAFF,

@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
-import vn.com.assistant.fqcbackend.entity.Role;
+import vn.com.assistant.fqcbackend.entity.enums.Role;
 import vn.com.assistant.fqcbackend.entity.User;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.UserRepository;
