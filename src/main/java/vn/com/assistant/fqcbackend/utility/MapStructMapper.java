@@ -9,4 +9,5 @@ public interface MapStructMapper {
     default String emptyStringToNull(String string) {
         return string == null || StringUtils.trimAllWhitespace(string).isEmpty() ? null : string;
     }
+
 }

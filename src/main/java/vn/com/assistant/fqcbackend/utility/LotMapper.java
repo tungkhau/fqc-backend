@@ -1,6 +1,7 @@
 package vn.com.assistant.fqcbackend.utility;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
@@ -15,5 +16,7 @@ public interface LotMapper extends MapStructMapper{
     LotResponseDTO lotToLotResponseDTO (Lot lot);
     List<LotResponseDTO> listLotToLotResponseDTO (List<Lot> lots);
     Lot lotRequestDTOtoLot(LotRequestDTO lotRequestDTO);
+
+    @Mapping(target = "code", ignore = true)
     void updateLotFromLotRequestDTO(LotRequestDTO lotRequestDTO, @MappingTarget Lot lot);
 }

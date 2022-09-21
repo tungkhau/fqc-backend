@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
 import vn.com.assistant.fqcbackend.dto.LotResponseDTO;
 import vn.com.assistant.fqcbackend.entity.Lot;
+import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
 import vn.com.assistant.fqcbackend.utility.LotMapper;
@@ -42,6 +43,8 @@ public class LotServiceImp implements LotService{
     @Override
     public void delete(String lotId) {
         Lot lot = _repository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
-        _repository.delete(lot);
+        if (lot.getMeasurement() != null || !lot.getInspectings().isEmpty())
+            throw new ConflictException(env.getProperty("lot.used"));
+        _repository.deleteById(lotId);
     }
 }

@@ -19,6 +19,7 @@ public interface CriterialMapper extends MapStructMapper{
     @Mapping(source = "no", target = "no")
     GradeResponseDTO gradeToGradeResponseDTO(Grade grade);
     List<Grade> listGradeRequestDTOToListGrade(List<GradeRequestDTO> gradeRequestDTOList);
+    List<GradeResponseDTO> listGradeToListGradeResponseDTO(List<Grade> gradeList);
     Criterial criterialRequestDTOtoCriterial (CriterialRequestDTO criterialRequestDTO);
     CriterialResponseDTO criterialToCriterialResponseDTO (Criterial criterial);
     List<CriterialResponseDTO> listCriterialToListCriterialResponseDTO (List<Criterial> criterialList);

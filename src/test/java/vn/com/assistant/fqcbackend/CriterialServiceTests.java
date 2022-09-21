@@ -107,7 +107,6 @@ public class CriterialServiceTests {
         criterial.setId(UUID.randomUUID().toString());
         criterial.setUnit(Unit.SQUAREMETER);
         criterial.setName("Name");
-        criterial.setLots(new ArrayList<>());
         criterial.setGrades(new ArrayList<>());
         return criterial;
     }

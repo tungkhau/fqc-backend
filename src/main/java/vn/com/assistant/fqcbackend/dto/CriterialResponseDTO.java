@@ -11,4 +11,5 @@ public class CriterialResponseDTO {
     private String id;
     private String name;
     private String unit;
+    private List<GradeResponseDTO> grades;
 }

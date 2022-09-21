@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "lots", uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code")})
 @Entity
@@ -32,6 +33,10 @@ public class Lot {
 
     @Column(name = "order_number")
     private Integer orderNumber;
+
+    @OneToMany
+    @JoinColumn(name = "lot_id")
+    private List<Inspecting> inspectings;
 
     @OneToOne
     @JoinColumn(name = "lot_id")
