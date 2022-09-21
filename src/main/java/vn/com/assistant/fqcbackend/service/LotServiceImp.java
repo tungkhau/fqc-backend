@@ -20,7 +20,7 @@ import java.util.List;
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class LotServiceImp implements LotService{
     private final LotRepository _repository;
-    private Environment env;
+    private final Environment env;
     @Override
     public List<LotResponseDTO> fetch() {
         List<Lot> lots = _repository.findAll();
