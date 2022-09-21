@@ -1,6 +1,5 @@
 package vn.com.assistant.fqcbackend.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,32 +18,32 @@ import java.util.List;
 @RequiredArgsConstructor
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class LotServiceImp implements LotService{
-    private final LotRepository _repository;
+    private final LotRepository lotRepository;
     private final Environment env;
     @Override
     public List<LotResponseDTO> fetch() {
-        List<Lot> lots = _repository.findAll();
+        List<Lot> lots = lotRepository.findAll();
         return LotMapper.INSTANCE.listLotToLotResponseDTO(lots);
     }
 
     @Override
     public void create(LotRequestDTO lotRequestDTO) {
         Lot lot = LotMapper.INSTANCE.lotRequestDTOtoLot(lotRequestDTO);
-        _repository.save(lot);
+        lotRepository.save(lot);
     }
 
     @Override
     public void update(LotRequestDTO lotRequestDTO, String lotId) {
-        Lot lot = _repository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
+        Lot lot = lotRepository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
         LotMapper.INSTANCE.updateLotFromLotRequestDTO(lotRequestDTO, lot);
-        _repository.save(lot);
+        lotRepository.save(lot);
     }
 
     @Override
     public void delete(String lotId) {
-        Lot lot = _repository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
+        Lot lot = lotRepository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
         if (lot.getMeasurement() != null || !lot.getInspectings().isEmpty())
             throw new ConflictException(env.getProperty("lot.used"));
-        _repository.deleteById(lotId);
+        lotRepository.deleteById(lotId);
     }
 }

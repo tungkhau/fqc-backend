@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CriterialRequestDTO {
+public class CriteriaRequestDTO {
     @NotBlank
     private String name;
     @NotBlank

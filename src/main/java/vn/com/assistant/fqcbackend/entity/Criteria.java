@@ -12,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "criterials", uniqueConstraints = {@UniqueConstraint(name = "name", columnNames = "name")})
-public class Criterial {
+@Table(name = "criteria", uniqueConstraints = {@UniqueConstraint(name = "name", columnNames = "name")})
+public class Criteria {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,7 +28,7 @@ public class Criterial {
     private Unit unit;
 
     @OneToMany(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "criterials_id")
+    @JoinColumn(name = "criteria_id")
     @OrderColumn(name = "no")
     @ToString.Exclude
     private List<Grade> grades;
