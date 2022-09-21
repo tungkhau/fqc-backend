@@ -1,0 +1,13 @@
+package vn.com.assistant.fqcbackend.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class LotRequestDTO {
+    private String code;
+    private Integer expectedQuantity;
+    private Integer expectedWeight;
+    private Integer orderNumber;
+}

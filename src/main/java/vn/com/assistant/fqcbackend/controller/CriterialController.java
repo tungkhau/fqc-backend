@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import vn.com.assistant.fqcbackend.dto.CriterialRequestDTO;
 import vn.com.assistant.fqcbackend.dto.CriterialResponseDTO;
-import vn.com.assistant.fqcbackend.dto.CustomerResponseDTO;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.service.CriterialService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,11 +22,24 @@ public class CriterialController {
 
     private final CriterialService criterialService;
 
-
     @GetMapping(value = "/criterials")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public ResponseBodyDTO fetch() {
         List<CriterialResponseDTO> customerResponseDTOList = criterialService.fetch();
         return new ResponseBodyDTO(null, "ACCEPTED", customerResponseDTOList);
+    }
+
+    @PostMapping(value = "/criterials")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseBodyDTO create(@Valid @RequestBody CriterialRequestDTO criterialRequestDTO){
+        criterialService.create(criterialRequestDTO);
+        return new ResponseBodyDTO(env.getProperty("criterial.created"), "OK", null);
+    }
+
+    @DeleteMapping(value = "/criterials/{criterialId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseBodyDTO delete(@PathVariable String id){
+        criterialService.delete(id);
+        return new ResponseBodyDTO(env.getProperty("criterial.deleted"), "OK", null);
     }
 }

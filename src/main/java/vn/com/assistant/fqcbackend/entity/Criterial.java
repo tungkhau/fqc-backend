@@ -1,14 +1,16 @@
 package vn.com.assistant.fqcbackend.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import vn.com.assistant.fqcbackend.entity.enums.Unit;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "criterials", uniqueConstraints = {@UniqueConstraint(name = "name", columnNames = "name")})
 public class Criterial {
@@ -25,7 +27,9 @@ public class Criterial {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @OneToMany(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "criterials_id")
+    @OrderColumn(name = "no")
+    @ToString.Exclude
+    private List<Grade> grades;
 }

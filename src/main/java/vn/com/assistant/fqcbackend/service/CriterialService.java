@@ -8,6 +8,5 @@ import java.util.List;
 public interface CriterialService {
     List<CriterialResponseDTO> fetch();
     void create(CriterialRequestDTO criterialRequestDTO);
-    void update(CriterialRequestDTO criterialRequestDTO, String criterialId);
     void delete(String criterialId);
 }
