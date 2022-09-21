@@ -28,6 +28,8 @@ services:
     container_name: backend
     depends_on:
       - mysql
+    ports:
+      - "8000:8000"
     build:
       context: .
       dockerfile: Dockerfile
