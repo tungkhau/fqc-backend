@@ -32,4 +32,9 @@ public class Criteria {
     @OrderColumn(name = "no")
     @ToString.Exclude
     private List<Grade> grades;
+
+    @OneToMany
+    @JoinColumn(name = "criteria_id")
+    @ToString.Exclude
+    private List<Product> products;
 }

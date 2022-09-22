@@ -41,7 +41,7 @@ public class CriteriaServiceImp implements CriteriaService {
     @Override
     public void delete(String criteriaId) {
         Criteria criteria = _repository.findById(criteriaId).orElseThrow(() -> new InvalidException(env.getProperty("criteria.notExisted")));
-        if (!(criteria.getGrades().isEmpty()))
+        if (!(criteria.getProducts().isEmpty()))
             throw new ConflictException(env.getProperty("criteria.used"));
         _repository.deleteById(criteriaId);
     }
