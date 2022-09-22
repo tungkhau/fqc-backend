@@ -8,8 +8,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
+import vn.com.assistant.fqcbackend.dto.PasswordRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
 import vn.com.assistant.fqcbackend.entity.enums.Role;
 import vn.com.assistant.fqcbackend.entity.User;
@@ -36,9 +38,9 @@ public class StaffServiceTests {
     @Mock
     UserRepository userRepository;
     @Mock
-    PasswordEncoder passwordEncoder;
-    @Mock
     Environment env;
+    @Mock
+    PasswordEncoder passwordEncoder;
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
     @InjectMocks
@@ -112,6 +114,21 @@ public class StaffServiceTests {
         User user = genMockStaff();
         String staffId = UUID.randomUUID().toString();
         user.setId(staffId);
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+
+        //when
+        staffService.resetPassword(staffId);
+
+        //then
+        Mockito.verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedCustomer = userArgumentCaptor.getValue();
+        assertThat(capturedCustomer.getPassword()).isEqualTo(defaultPassword);
+    }
+
+    @Test
+    void canChangePassword() {
+        //given
     }
 
     private StaffRequestDTO genMockStaffRequest(){
@@ -123,7 +140,16 @@ public class StaffServiceTests {
     }
 
     private User genMockStaff(){
-        return new User(UUID.randomUUID().toString(),"STAFF", "Nguyen Van B", "12345", "STAFF", false,new Date());
+        return new User(UUID.randomUUID().toString(),"STAFF", "Nguyen Van B",
+                "$2a$12$3I0agSHQOyu7lUrM.oEba.soQQGTIWYmu5nEXJ9J2h225VNVT264K", "STAFF", false,new Date());
+    }
+
+    private PasswordRequestDTO genMockPasswordRequest(){
+        PasswordRequestDTO requestDTO = new PasswordRequestDTO();
+        requestDTO.setOldPassword("12345");
+        requestDTO.setNewPassword("sa");
+        requestDTO.setConfirmPassword("sa");
+        return requestDTO;
     }
 
 }

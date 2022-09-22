@@ -2,8 +2,11 @@ package vn.com.assistant.fqcbackend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.dto.PasswordRequestDTO;
@@ -63,10 +66,17 @@ public class StaffServiceImp implements StaffService {
     }
 
     private void validationPassword(PasswordRequestDTO passwordRequestDTO, User user){
+        System.out.println(passwordRequestDTO.getOldPassword());
+        System.out.println(user.getEncryptedPassword());
+        System.out.println(passwordEncoder.matches(passwordRequestDTO.getOldPassword(), user.getEncryptedPassword()));
         if(!passwordEncoder.matches(passwordRequestDTO.getOldPassword(), user.getEncryptedPassword()))
             throw new InvalidException(env.getProperty("staff.wrongPassword"));
 
         if(!passwordRequestDTO.getNewPassword().equals(passwordRequestDTO.getConfirmPassword()))
             throw new InvalidException(env.getProperty("staff.notMatchPassword"));
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
