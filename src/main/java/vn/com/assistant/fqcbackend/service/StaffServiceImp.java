@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.com.assistant.fqcbackend.dto.PasswordRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
 import vn.com.assistant.fqcbackend.entity.User;
@@ -52,5 +53,20 @@ public class StaffServiceImp implements StaffService {
         User user = userRepository.findById(staffId).orElseThrow(() -> new InvalidException(env.getProperty("staff.notExisted")));
         user.setEncryptedPassword(passwordEncoder.encode(defaultPassword));
         userRepository.save(user);
+    }
+    @Override
+    public void changePassword(PasswordRequestDTO passwordRequestDTO, String id){
+        User user = userRepository.findById(id).orElseThrow(() -> new InvalidException(env.getProperty("staff.notExisted")));
+        validationPassword(passwordRequestDTO, user);
+        user.setEncryptedPassword(passwordEncoder.encode(passwordRequestDTO.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    private void validationPassword(PasswordRequestDTO passwordRequestDTO, User user){
+        if(!passwordEncoder.matches(passwordRequestDTO.getOldPassword(), user.getEncryptedPassword()))
+            throw new InvalidException(env.getProperty("staff.wrongPassword"));
+
+        if(!passwordRequestDTO.getNewPassword().equals(passwordRequestDTO.getConfirmPassword()))
+            throw new InvalidException(env.getProperty("staff.notMatchPassword"));
     }
 }

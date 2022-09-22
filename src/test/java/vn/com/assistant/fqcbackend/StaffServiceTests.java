@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,8 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = {StaffServiceImp.class})
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
 public class StaffServiceTests {
+    @Value("${defaultPassword}")
+    private String defaultPassword;
     @Mock
     UserRepository userRepository;
     @Mock
@@ -41,6 +44,11 @@ public class StaffServiceTests {
     @InjectMocks
     StaffServiceImp staffService;
 
+    @Test
+    void canFetch(){
+        staffService.fetch();
+        verify(userRepository).findAllByOrderByCreatedTimeDesc();
+    }
     @Test
     void canCreate() {
         //given
@@ -100,7 +108,10 @@ public class StaffServiceTests {
 
     @Test
     void canResetPassword() {
-
+        //given
+        User user = genMockStaff();
+        String staffId = UUID.randomUUID().toString();
+        user.setId(staffId);
     }
 
     private StaffRequestDTO genMockStaffRequest(){
