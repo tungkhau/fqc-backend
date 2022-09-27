@@ -13,7 +13,7 @@ import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.repository.FabricRepository;
 import vn.com.assistant.fqcbackend.service.FabricService;
-import vn.com.assistant.fqcbackend.utility.FabricMapper;
+import vn.com.assistant.fqcbackend.mapper.FabricMapper;
 
 import java.util.List;
 

@@ -9,6 +9,6 @@ import vn.com.assistant.fqcbackend.entity.enums.Label;
 public class ProductRequestDTO {
     String fabricId;
     String colorId;
-    String criteriaId;
-    Label label;
+    String criterionId;
+    String label;
 }

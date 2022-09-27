@@ -9,5 +9,6 @@ public class ColorResponseDTO {
     String id;
     String code;
     String name;
+    String customerId;
     String customerName;
 }

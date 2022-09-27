@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.utility;
+package vn.com.assistant.fqcbackend.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

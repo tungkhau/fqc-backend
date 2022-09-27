@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.utility;
+package vn.com.assistant.fqcbackend.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,6 +15,7 @@ public interface ColorMapper extends MapStructMapper {
     ColorMapper INSTANCE = Mappers.getMapper(ColorMapper.class);
 
     @Mapping(target = "customerName", source = "customer.name")
+    @Mapping(target = "customerId", source = "customer.id")
     ColorResponseDTO colorToColorResponseDTO(Color color);
 
     List<ColorResponseDTO> listColorToListColorResponseDTO(List<Color> colorList);

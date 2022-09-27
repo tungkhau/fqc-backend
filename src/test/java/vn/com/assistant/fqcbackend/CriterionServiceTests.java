@@ -15,7 +15,7 @@ import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CriterionRepository;
 import vn.com.assistant.fqcbackend.service.imps.CriterionServiceImp;
 import vn.com.assistant.fqcbackend.service.imps.CustomerServiceImp;
-import vn.com.assistant.fqcbackend.utility.CriterionMapper;
+import vn.com.assistant.fqcbackend.mapper.CriterionMapper;
 
 import java.util.ArrayList;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.utility;
+package vn.com.assistant.fqcbackend.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,7 +11,7 @@ import vn.com.assistant.fqcbackend.entity.Lot;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface LotMapper extends MapStructMapper{
+public interface LotMapper extends MapStructMapper {
     LotMapper INSTANCE = Mappers.getMapper(LotMapper.class);
     LotResponseDTO lotToLotResponseDTO (Lot lot);
     List<LotResponseDTO> listLotToLotResponseDTO (List<Lot> lots);

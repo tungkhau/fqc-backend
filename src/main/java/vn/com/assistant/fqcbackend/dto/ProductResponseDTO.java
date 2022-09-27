@@ -14,7 +14,7 @@ public class ProductResponseDTO {
     String colorName;
     String colorCode;
 
-    String criteriaName;
+    String criterionName;
 
     Label label;
 }

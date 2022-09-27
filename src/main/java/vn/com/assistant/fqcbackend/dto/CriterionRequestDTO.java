@@ -10,10 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CriterionRequestDTO {
-    @NotBlank
     private String name;
-    @NotBlank
     private String unit;
-    @Size(min = 1)
     private List<GradeRequestDTO> grades;
 }

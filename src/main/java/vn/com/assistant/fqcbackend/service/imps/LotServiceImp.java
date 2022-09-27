@@ -11,7 +11,7 @@ import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
 import vn.com.assistant.fqcbackend.service.LotService;
-import vn.com.assistant.fqcbackend.utility.LotMapper;
+import vn.com.assistant.fqcbackend.mapper.LotMapper;
 
 import java.util.List;
 

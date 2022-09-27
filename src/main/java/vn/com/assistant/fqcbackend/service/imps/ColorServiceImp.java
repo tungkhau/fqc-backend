@@ -13,7 +13,7 @@ import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.ColorRepository;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.service.ColorService;
-import vn.com.assistant.fqcbackend.utility.ColorMapper;
+import vn.com.assistant.fqcbackend.mapper.ColorMapper;
 
 import java.util.List;
 

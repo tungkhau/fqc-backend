@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.utility;
+package vn.com.assistant.fqcbackend.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,7 +13,7 @@ import vn.com.assistant.fqcbackend.entity.Grade;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface CriterionMapper extends MapStructMapper{
+public interface CriterionMapper extends MapStructMapper {
     CriterionMapper INSTANCE = Mappers.getMapper(CriterionMapper.class);
     Grade gradeRequestDTOtoGrade(GradeRequestDTO gradeRequestDTO);
     @Mapping(source = "no", target = "no")

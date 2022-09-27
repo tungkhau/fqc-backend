@@ -11,7 +11,7 @@ import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.service.CustomerService;
-import vn.com.assistant.fqcbackend.utility.CustomerMapper;
+import vn.com.assistant.fqcbackend.mapper.CustomerMapper;
 
 import java.util.List;
 

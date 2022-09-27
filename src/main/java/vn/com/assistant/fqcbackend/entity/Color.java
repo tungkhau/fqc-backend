@@ -32,6 +32,7 @@ public class Color {
     private List<Product> productList;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @CreationTimestamp

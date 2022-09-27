@@ -36,5 +36,5 @@ public class Criterion {
     @OneToMany
     @JoinColumn(name = "criterion_id")
     @ToString.Exclude
-    private List<Product> products;
+    private List<Product> productList;
 }

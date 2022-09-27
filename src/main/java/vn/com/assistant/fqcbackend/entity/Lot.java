@@ -39,6 +39,5 @@ public class Lot {
     private List<Inspecting> inspectings;
 
     @OneToOne
-    @JoinColumn(name = "lot_id")
     private Measurement measurement;
 }
