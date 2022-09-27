@@ -3,30 +3,26 @@ package vn.com.assistant.fqcbackend.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import vn.com.assistant.fqcbackend.entity.enums.Stage;
+import vn.com.assistant.fqcbackend.entity.enums.Unit;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "defects")
 @Getter
 @Setter
-@Table(name = "measurements")
-public class Measurement {
+public class Defect {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "total_width", nullable = false)
-    private Float totalWidth;
+    @Column(name = "code", nullable = false)
+    private String code;
 
-    @Column(name = "usable_width", nullable = false)
-    private Float usableWidth;
-
-    @Column(name = "area_density", nullable = false)
-    private Float areaDensity;
-
-    @OneToOne
-    @JoinColumn(name = "lot_id")
-    private Lot lot;
+    @Column(name = "stage", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Stage stage;
 }

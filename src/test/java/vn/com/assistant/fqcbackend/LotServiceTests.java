@@ -12,7 +12,7 @@ import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Lot;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
-import vn.com.assistant.fqcbackend.service.imps.LotServiceImp;
+import vn.com.assistant.fqcbackend.service.imp.LotServiceImp;
 import vn.com.assistant.fqcbackend.mapper.LotMapper;
 
 import java.util.ArrayList;
@@ -141,7 +141,7 @@ public class LotServiceTests {
         lot.setExpectedQuantity(4);
         lot.setExpectedWeight(5);
         lot.setOrderNumber(6);
-        lot.setInspectings(new ArrayList<>());
+        lot.setInspectingSessions(new ArrayList<>());
         lot.setMeasurement(null);
         return lot;
     }

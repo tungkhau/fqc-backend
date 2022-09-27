@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.service.imps;
+package vn.com.assistant.fqcbackend.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

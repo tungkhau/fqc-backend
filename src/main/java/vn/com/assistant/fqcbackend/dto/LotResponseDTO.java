@@ -11,4 +11,6 @@ public class LotResponseDTO {
     private Integer expectedQuantity;
     private Integer expectedWeight;
     private Integer orderNumber;
+
+    private MeasurementResponseDTO measurement;
 }

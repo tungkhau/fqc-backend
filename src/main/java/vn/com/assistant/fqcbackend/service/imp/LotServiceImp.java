@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.service.imps;
+package vn.com.assistant.fqcbackend.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
@@ -43,7 +43,7 @@ public class LotServiceImp implements LotService {
     @Override
     public void delete(String lotId) {
         Lot lot = lotRepository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
-        if (lot.getMeasurement() != null || !lot.getInspectings().isEmpty())
+        if (lot.getMeasurement() != null || !lot.getInspectingSessions().isEmpty())
             throw new ConflictException(env.getProperty("lot.used"));
         lotRepository.deleteById(lotId);
     }

@@ -12,7 +12,7 @@ import vn.com.assistant.fqcbackend.dto.CustomerRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Customer;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
-import vn.com.assistant.fqcbackend.service.imps.CustomerServiceImp;
+import vn.com.assistant.fqcbackend.service.imp.CustomerServiceImp;
 import vn.com.assistant.fqcbackend.mapper.CustomerMapper;
 
 import java.util.ArrayList;

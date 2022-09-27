@@ -36,7 +36,7 @@ public class Lot {
 
     @OneToMany
     @JoinColumn(name = "lot_id")
-    private List<Inspecting> inspectings;
+    private List<InspectingSession> inspectingSessions;
 
     @OneToOne
     private Measurement measurement;

@@ -27,7 +27,7 @@ public class Criterion {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    @OneToMany(cascade = {CascadeType.PERSIST})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "criterion_id")
     @OrderColumn(name = "no")
     @ToString.Exclude

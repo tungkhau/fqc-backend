@@ -9,12 +9,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "inspectings")
+@Table(name = "inspecting_sessions")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Inspecting {
+public class InspectingSession {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")

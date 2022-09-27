@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import vn.com.assistant.fqcbackend.filter.CustomAuthorizationFilter;
-import vn.com.assistant.fqcbackend.service.imps.UserDetailServiceImp;
+import vn.com.assistant.fqcbackend.service.imp.UserDetailServiceImp;
 import vn.com.assistant.fqcbackend.utility.JwtTokenUtility;
 
 import java.util.Arrays;
