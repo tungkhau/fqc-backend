@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.service;
+package vn.com.assistant.fqcbackend.service.imps;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
@@ -10,6 +10,7 @@ import vn.com.assistant.fqcbackend.entity.Lot;
 import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
+import vn.com.assistant.fqcbackend.service.LotService;
 import vn.com.assistant.fqcbackend.utility.LotMapper;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
-public class LotServiceImp implements LotService{
+public class LotServiceImp implements LotService {
     private final LotRepository lotRepository;
     private final Environment env;
     @Override

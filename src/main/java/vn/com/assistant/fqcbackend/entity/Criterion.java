@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "criteria", uniqueConstraints = {@UniqueConstraint(name = "name", columnNames = "name")})
-public class Criteria {
+public class Criterion {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,13 +28,13 @@ public class Criteria {
     private Unit unit;
 
     @OneToMany(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "criteria_id")
+    @JoinColumn(name = "criterion_id")
     @OrderColumn(name = "no")
     @ToString.Exclude
-    private List<Grade> grades;
+    private List<Grade> gradeList;
 
     @OneToMany
-    @JoinColumn(name = "criteria_id")
+    @JoinColumn(name = "criterion_id")
     @ToString.Exclude
     private List<Product> products;
 }

@@ -1,4 +1,4 @@
-package vn.com.assistant.fqcbackend.service;
+package vn.com.assistant.fqcbackend.service.imps;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
@@ -10,6 +10,7 @@ import vn.com.assistant.fqcbackend.entity.Customer;
 import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
+import vn.com.assistant.fqcbackend.service.CustomerService;
 import vn.com.assistant.fqcbackend.utility.CustomerMapper;
 
 import java.util.List;
@@ -45,8 +46,7 @@ public class CustomerServiceImp implements CustomerService {
     @Override
     public void delete(String customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidException(env.getProperty("customer.notExisted")));
-        if (!(customer.getFabricList().isEmpty() && customer.getColorList().isEmpty()))
-            throw new ConflictException(env.getProperty("customer.used"));
+        if (!(customer.getFabricList().isEmpty() && customer.getColorList().isEmpty())) throw new ConflictException(env.getProperty("customer.used"));
         customerRepository.deleteById(customerId);
     }
 }

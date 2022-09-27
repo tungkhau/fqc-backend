@@ -32,7 +32,7 @@ public class Lot {
     private Integer expectedWeight;
 
     @Column(name = "order_number")
-    private Integer orderNumber;
+    private String orderNumber;
 
     @OneToMany
     @JoinColumn(name = "lot_id")

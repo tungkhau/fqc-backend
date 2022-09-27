@@ -12,7 +12,7 @@ import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Lot;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
-import vn.com.assistant.fqcbackend.service.LotServiceImp;
+import vn.com.assistant.fqcbackend.service.imps.LotServiceImp;
 import vn.com.assistant.fqcbackend.utility.LotMapper;
 
 import java.util.ArrayList;

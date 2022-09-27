@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "inspecting")
+@Table(name = "inspectings")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +20,6 @@ public class Inspecting {
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", nullable = false)
     private String id;
+
+
 }

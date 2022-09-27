@@ -8,14 +8,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
-import vn.com.assistant.fqcbackend.dto.CriteriaRequestDTO;
-import vn.com.assistant.fqcbackend.entity.Criteria;
+import vn.com.assistant.fqcbackend.dto.CriterionRequestDTO;
+import vn.com.assistant.fqcbackend.entity.Criterion;
 import vn.com.assistant.fqcbackend.entity.enums.Unit;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
-import vn.com.assistant.fqcbackend.repository.CriteriaRepository;
-import vn.com.assistant.fqcbackend.service.CriteriaServiceImp;
-import vn.com.assistant.fqcbackend.service.CustomerServiceImp;
-import vn.com.assistant.fqcbackend.utility.CriteriaMapper;
+import vn.com.assistant.fqcbackend.repository.CriterionRepository;
+import vn.com.assistant.fqcbackend.service.imps.CriterionServiceImp;
+import vn.com.assistant.fqcbackend.service.imps.CustomerServiceImp;
+import vn.com.assistant.fqcbackend.utility.CriterionMapper;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -30,61 +30,61 @@ import static org.mockito.Mockito.never;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = {CustomerServiceImp.class})
 @PropertySource(value = "classpath:messages.properties", encoding = "UTF-8")
-public class CriteriaServiceTests {
+public class CriterionServiceTests {
     @Mock
-    CriteriaRepository criteriaRepository;
+    CriterionRepository criterionRepository;
     @Mock
     Environment env;
     @Captor
-    private ArgumentCaptor<Criteria> criteriaArgumentCaptor;
+    private ArgumentCaptor<Criterion> criteriaArgumentCaptor;
     @InjectMocks
-    CriteriaServiceImp criteriaService;
+    CriterionServiceImp criteriaService;
 
     @Test
     void canFetch() {
         criteriaService.fetch();
-        verify(criteriaRepository).findAll();
+        verify(criterionRepository).findAll();
     }
 
     @Test
     void canCreate() {
         //given
-        CriteriaRequestDTO requestDTO = genMockCriteriaRequest();
-        criteriaArgumentCaptor = ArgumentCaptor.forClass(Criteria.class);
-        Criteria criteria = CriteriaMapper.INSTANCE.criteriaRequestDTOtoCriteria(requestDTO);
+        CriterionRequestDTO requestDTO = genMockCriteriaRequest();
+        criteriaArgumentCaptor = ArgumentCaptor.forClass(Criterion.class);
+        Criterion criterion = CriterionMapper.INSTANCE.criterionRequestDTOtoCriterion(requestDTO);
 
         //when
         criteriaService.create(requestDTO);
         //then
-        Mockito.verify(criteriaRepository).save(criteriaArgumentCaptor.capture());
-        Criteria capturedCriteria = criteriaArgumentCaptor.getValue();
+        Mockito.verify(criterionRepository).save(criteriaArgumentCaptor.capture());
+        Criterion capturedCriterion = criteriaArgumentCaptor.getValue();
 
-        assertThat(capturedCriteria)
+        assertThat(capturedCriterion)
                 .usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(criteria);
+                .isEqualTo(criterion);
     }
 
     @Test
     void canDelete(){
         //give
         String criteriaId = UUID.randomUUID().toString();
-        Criteria criteria = genMockCriteria();
-        criteria.setId(criteriaId);
-        given(criteriaRepository.findById(criteriaId)).willReturn(Optional.of(criteria));
+        Criterion criterion = genMockCriteria();
+        criterion.setId(criteriaId);
+        given(criterionRepository.findById(criteriaId)).willReturn(Optional.of(criterion));
 
         //when
         criteriaService.delete(criteriaId);
         //then
-        Mockito.verify(criteriaRepository).deleteById(criteriaId);
+        Mockito.verify(criterionRepository).deleteById(criteriaId);
     }
     @Test
     void deleteFailedNotFound(){
         //give
         String criteriaId = UUID.randomUUID().toString();
-        Criteria criteria = genMockCriteria();
-        criteria.setId(criteriaId);
-        given(criteriaRepository.findById(criteriaId)).willReturn(Optional.empty());
+        Criterion criterion = genMockCriteria();
+        criterion.setId(criteriaId);
+        given(criterionRepository.findById(criteriaId)).willReturn(Optional.empty());
 
         when(env.getProperty("criteria.notExisted")).thenReturn("Msg");
         //when and then
@@ -92,22 +92,22 @@ public class CriteriaServiceTests {
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
 
-        verify(criteriaRepository, never()).delete(any());
+        verify(criterionRepository, never()).delete(any());
     }
 
-    private CriteriaRequestDTO genMockCriteriaRequest(){
-        CriteriaRequestDTO requestDTO = new CriteriaRequestDTO();
+    private CriterionRequestDTO genMockCriteriaRequest(){
+        CriterionRequestDTO requestDTO = new CriterionRequestDTO();
         requestDTO.setName("Name request");
         requestDTO.setUnit(Unit.METER.name());
         return requestDTO;
     }
 
-    private Criteria genMockCriteria(){
-        Criteria criteria = new Criteria();
-        criteria.setId(UUID.randomUUID().toString());
-        criteria.setUnit(Unit.SQUAREMETER);
-        criteria.setName("Name");
-        criteria.setGrades(new ArrayList<>());
-        return criteria;
+    private Criterion genMockCriteria(){
+        Criterion criterion = new Criterion();
+        criterion.setId(UUID.randomUUID().toString());
+        criterion.setUnit(Unit.SQUARE_METER);
+        criterion.setName("Name");
+        criterion.setGradeList(new ArrayList<>());
+        return criterion;
     }
 }

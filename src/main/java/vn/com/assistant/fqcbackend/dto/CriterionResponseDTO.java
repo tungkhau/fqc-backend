@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CriteriaResponseDTO {
+public class CriterionResponseDTO {
     private String id;
     private String name;
     private String unit;
