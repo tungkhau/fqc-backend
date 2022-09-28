@@ -44,7 +44,7 @@ public class CriterionServiceImp implements CriterionService {
 
     @Override
     public void delete(String criteriaId) {
-        Criterion criterion = criterionRepository.findById(criteriaId).orElseThrow(() -> new InvalidException(env.getProperty("criterion.notExisted")));
+        Criterion criterion = criterionRepository.findById(criteriaId).orElseThrow(() -> new InvalidException(env.getProperty("criterion.notFound")));
         if (!(criterion.getProductList().isEmpty()))
             throw new ConflictException(env.getProperty("criterion.used"));
         criterionRepository.deleteById(criteriaId);
