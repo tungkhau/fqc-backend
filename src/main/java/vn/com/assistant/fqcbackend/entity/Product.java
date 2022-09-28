@@ -22,24 +22,23 @@ public class Product {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "label")
+    @ManyToOne
+    @JoinColumn(name = "fabric_id", nullable = false, updatable = false)
+    private Fabric fabric;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false, updatable = false)
+    private Color color;
+
+    @Column(name = "label", insertable = false)
     @Enumerated(EnumType.STRING)
     private Label label;
 
     @ManyToOne
-    @JoinColumn(name = "fabric_id", nullable = false)
-    private Fabric fabric;
-
-    @ManyToOne
-    @JoinColumn(name = "color_id", nullable = false)
-    private Color color;
-
-    @ManyToOne
-    @JoinColumn(name = "criterion_id")
+    @JoinColumn(name = "criterion_id", insertable = false)
     private Criterion criterion;
 
-    @OneToMany
-    @JoinColumn(name = "product_id")
+    @OneToMany(mappedBy = "product")
     @ToString.Exclude
     private List<Lot> lotList;
 

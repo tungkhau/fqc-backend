@@ -37,7 +37,7 @@ public class CriterionServiceImp implements CriterionService {
 
         boolean validUnit = EnumUtils.isValidEnum(Unit.class, criterionRequestDTO.getUnit());
 
-        if(!validUnit) throw new InvalidException(env.getProperty("criterion.create.invalidUnit"));
+        if(!validUnit) throw new InvalidException(env.getProperty("criterion.invalidUnit"));
         Criterion criterion = CriterionMapper.INSTANCE.criterionRequestDTOtoCriterion(criterionRequestDTO);
         criterionRepository.save(criterion);
     }

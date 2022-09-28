@@ -1,6 +1,5 @@
 server:
   port: 8000
-  address: 192.168.1.8
 jwt:
   secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
   expiration: 84600
@@ -13,6 +12,11 @@ spring:
       ddl-auto: update
 ---
 spring:
+#  jpa:
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    show-sql: true
   config:
     activate:
       on-profile: dev

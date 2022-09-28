@@ -10,13 +10,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class LotRequestDTO {
     private String code;
-    @NotNull
-    @Min(value=0, message="{expectedQuantity.inValid}")
     private Integer expectedQuantity;
-    @NotNull
-    @Min(value=0, message="{expectedWeight.inValid}")
     private Integer expectedWeight;
-    @NotNull
-    @Min(value=0, message="{orderNumber.inValid}")
-    private Integer orderNumber;
+    private String orderCode;
+    private String productId;
 }

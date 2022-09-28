@@ -21,7 +21,5 @@ public interface CustomerMapper extends MapStructMapper {
 
     Customer customerRequestDTOtoCustomer(CustomerRequestDTO customerRequestDTO);
 
-    @Mapping(target = "code", ignore = true)
-    @Mapping(target = "name", ignore = true)
     void updateCustomerFromCustomerRequestDTO(CustomerRequestDTO customerRequestDTO, @MappingTarget Customer customer);
 }

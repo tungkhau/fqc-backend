@@ -20,4 +20,8 @@ public class InspectingSession {
     private String id;
 
 
+    @ManyToOne
+    @JoinColumn(name = "lot_id")
+    private Lot lot;
+
 }

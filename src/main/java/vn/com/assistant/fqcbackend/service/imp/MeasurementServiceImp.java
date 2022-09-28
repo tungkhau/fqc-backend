@@ -38,9 +38,11 @@ public class MeasurementServiceImp implements MeasurementService {
     @Override
     public void delete(String measurementId) {
         Measurement measurement = measurementRepository.findById(measurementId).orElseThrow(() -> new InvalidException(env.getProperty("measurement.notExisted")));
+
         Lot lot = lotRepository.findById(measurement.getLot().getId()).orElseThrow(UnexpectedException::new);
-        boolean used = lot.getInspectingSessions().isEmpty();
-        if (!used) throw new ConflictException(env.getProperty("measurement.delete.used"));
+        boolean used = lot.getInspectingSessionList().isEmpty();
+
+        if (!used) throw new ConflictException(env.getProperty("measurement.used"));
         measurementRepository.deleteById(measurementId);
     }
 }

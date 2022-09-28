@@ -27,6 +27,5 @@ public class Measurement {
     private Float areaDensity;
 
     @OneToOne
-    @JoinColumn(name = "lot_id")
     private Lot lot;
 }

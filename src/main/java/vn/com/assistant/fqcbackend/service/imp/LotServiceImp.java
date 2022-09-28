@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
 import vn.com.assistant.fqcbackend.dto.LotResponseDTO;
 import vn.com.assistant.fqcbackend.entity.Lot;
+import vn.com.assistant.fqcbackend.entity.Product;
 import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
+import vn.com.assistant.fqcbackend.repository.ProductRepository;
 import vn.com.assistant.fqcbackend.service.LotService;
 import vn.com.assistant.fqcbackend.mapper.LotMapper;
 
@@ -21,15 +23,21 @@ import java.util.List;
 public class LotServiceImp implements LotService {
     private final LotRepository lotRepository;
     private final Environment env;
+
+    private final ProductRepository productRepository;
+
     @Override
     public List<LotResponseDTO> fetch() {
-        List<Lot> lots = lotRepository.findAll();
+        List<Lot> lots = lotRepository.findAllByOrderByCreatedTimeDesc();
         return LotMapper.INSTANCE.listLotToLotResponseDTO(lots);
     }
 
     @Override
     public void create(LotRequestDTO lotRequestDTO) {
         Lot lot = LotMapper.INSTANCE.lotRequestDTOtoLot(lotRequestDTO);
+        Product product = productRepository.findById(lotRequestDTO.getProductId()).orElseThrow(() -> new InvalidException(env.getProperty("product.notExisted")));
+
+        lot.setProduct(product);
         lotRepository.save(lot);
     }
 
@@ -43,8 +51,7 @@ public class LotServiceImp implements LotService {
     @Override
     public void delete(String lotId) {
         Lot lot = lotRepository.findById(lotId).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
-        if (lot.getMeasurement() != null || !lot.getInspectingSessions().isEmpty())
-            throw new ConflictException(env.getProperty("lot.used"));
+        if (!lot.getInspectingSessionList().isEmpty()) throw new ConflictException(env.getProperty("lot.used"));
         lotRepository.deleteById(lotId);
     }
 }

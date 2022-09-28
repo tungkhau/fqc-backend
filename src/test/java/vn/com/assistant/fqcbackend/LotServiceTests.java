@@ -140,8 +140,8 @@ public class LotServiceTests {
         lot.setCode("Code request");
         lot.setExpectedQuantity(4);
         lot.setExpectedWeight(5);
-        lot.setOrderNumber(6);
-        lot.setInspectingSessions(new ArrayList<>());
+        lot.setOrderCode(6);
+        lot.setInspectingSessionList(new ArrayList<>());
         lot.setMeasurement(null);
         return lot;
     }

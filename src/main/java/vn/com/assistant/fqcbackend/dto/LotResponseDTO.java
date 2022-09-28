@@ -10,7 +10,7 @@ public class LotResponseDTO {
     private String code;
     private Integer expectedQuantity;
     private Integer expectedWeight;
-    private Integer orderNumber;
+    private String orderCode;
 
     private MeasurementResponseDTO measurement;
 }

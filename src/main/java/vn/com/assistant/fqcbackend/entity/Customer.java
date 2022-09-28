@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers", uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code"),
-        @UniqueConstraint(name = "name", columnNames = "name"),@UniqueConstraint(name = "taxCode", columnNames = "tax_code")})
+        @UniqueConstraint(name = "name", columnNames = "name"), @UniqueConstraint(name = "taxCode", columnNames = "tax_code")})
 public class Customer {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -20,10 +20,10 @@ public class Customer {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = false, updatable = false)
     private String code;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, updatable = false)
     private String name;
 
     @Column(name = "full_name")

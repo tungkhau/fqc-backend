@@ -1,5 +1,6 @@
 package vn.com.assistant.fqcbackend.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

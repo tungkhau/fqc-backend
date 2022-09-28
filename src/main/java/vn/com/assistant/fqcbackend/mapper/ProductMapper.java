@@ -24,6 +24,5 @@ public interface ProductMapper extends MapStructMapper {
     List<ProductResponseDTO> listProductToListProductResponseDTO(List<Product> productList);
 
     @Mapping(target = "label", ignore = true)
-    @Mapping(target = "criterion", ignore = true)
     Product productRequestDTOtoProduct(ProductRequestDTO productRequestDTO);
 }

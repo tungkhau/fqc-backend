@@ -17,6 +17,5 @@ public interface LotMapper extends MapStructMapper {
     List<LotResponseDTO> listLotToLotResponseDTO (List<Lot> lots);
     Lot lotRequestDTOtoLot(LotRequestDTO lotRequestDTO);
 
-    @Mapping(target = "code", ignore = true)
     void updateLotFromLotRequestDTO(LotRequestDTO lotRequestDTO, @MappingTarget Lot lot);
 }
