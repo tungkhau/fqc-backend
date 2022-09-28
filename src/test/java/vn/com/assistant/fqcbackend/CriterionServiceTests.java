@@ -187,7 +187,6 @@ public class CriterionServiceTests {
 
     private Product genMockProduct(){
         return new Product("Test id", Label.FIRST, null, null, null, new ArrayList<>(), null);
-
     }
 
 }

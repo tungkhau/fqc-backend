@@ -104,6 +104,7 @@ public class ColorServiceTests {
         //given
         String colorId = "Test id";
         given(colorRepository.findById(colorId)).willReturn(Optional.empty());
+
         when(env.getProperty("color.notFound")).thenReturn("Msg");
         //when & then
         assertThatThrownBy(()-> colorService.delete(colorId))
@@ -116,14 +117,13 @@ public class ColorServiceTests {
     void testDeleteFailedUsed(){
         //given
         Color color = genMockColor();
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Test id", Label.FIRST, null, color, null, new ArrayList<>(), null));
-        String colorId = "Test id";
-        color.setProductList(products);
-        given(colorRepository.findById(colorId)).willReturn(Optional.of(color));
+        given(colorRepository.findById(color.getId())).willReturn(Optional.of(color));
+
+        given(color.getProductList().isEmpty()).willReturn(false);
+
         when(env.getProperty("color.used")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(()-> colorService.delete(colorId))
+        assertThatThrownBy(()-> colorService.delete(color.getId()))
                 .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
     }
