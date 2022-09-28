@@ -25,4 +25,9 @@ public class Defect {
     @Column(name = "stage", nullable = false)
     @Enumerated(EnumType.STRING)
     private Stage stage;
+
+    @ManyToOne
+    @JoinColumn(name = "defect_group_id")
+    private DefectGroup defectGroup;
+
 }

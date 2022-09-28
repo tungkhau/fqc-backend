@@ -28,8 +28,7 @@ public class DefectGroup {
     @Column(name = "default_point")
     private Integer defaultPoint;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "defect_group_id")
+    @OneToMany(mappedBy = "defectGroup", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     private List<Defect> defectList;
 }
