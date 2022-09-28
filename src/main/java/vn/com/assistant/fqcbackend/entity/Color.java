@@ -1,8 +1,6 @@
 package vn.com.assistant.fqcbackend.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,6 +11,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "fabrics",  uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code"),
+        @UniqueConstraint(name = "name", columnNames = "name")})
 public class Color {
     @Id
     @GeneratedValue(generator = "system-uuid")

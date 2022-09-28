@@ -76,8 +76,4 @@ public class StaffServiceImp implements StaffService {
         if(!passwordRequestDTO.getNewPassword().equals(passwordRequestDTO.getConfirmPassword()))
             throw new InvalidException(env.getProperty("staff.notMatchPassword"));
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
 }

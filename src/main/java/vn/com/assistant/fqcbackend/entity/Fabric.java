@@ -11,6 +11,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "fabrics",  uniqueConstraints = {@UniqueConstraint(name = "code", columnNames = "code"),
         @UniqueConstraint(name = "name", columnNames = "name")})
 public class Fabric {

@@ -38,14 +38,14 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public void update(CustomerRequestDTO customerRequestDTO, String customerId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidException(env.getProperty("customer.notExisted")));
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidException(env.getProperty("customer.notFound")));
         CustomerMapper.INSTANCE.updateCustomerFromCustomerRequestDTO(customerRequestDTO, customer);
         customerRepository.save(customer);
     }
 
     @Override
     public void delete(String customerId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidException(env.getProperty("customer.notExisted")));
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidException(env.getProperty("customer.notFound")));
         if (!(customer.getFabricList().isEmpty() && customer.getColorList().isEmpty())) throw new ConflictException(env.getProperty("customer.used"));
         customerRepository.deleteById(customerId);
     }
