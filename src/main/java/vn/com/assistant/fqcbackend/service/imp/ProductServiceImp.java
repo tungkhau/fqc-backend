@@ -45,8 +45,8 @@ public class ProductServiceImp implements ProductService {
     public void create(ProductRequestDTO productRequestDTO) {
         Product product = ProductMapper.INSTANCE.productRequestDTOtoProduct(productRequestDTO);
 
-        Fabric fabric = fabricRepository.findById(productRequestDTO.getFabricId()).orElseThrow(() -> new InvalidException(env.getProperty("fabric.notExisted")));
-        Color color = colorRepository.findById(productRequestDTO.getColorId()).orElseThrow(() -> new InvalidException(env.getProperty("color.notExisted")));
+        Fabric fabric = fabricRepository.findById(productRequestDTO.getFabricId()).orElseThrow(() -> new InvalidException(env.getProperty("fabric.notFound")));
+        Color color = colorRepository.findById(productRequestDTO.getColorId()).orElseThrow(() -> new InvalidException(env.getProperty("color.notFound")));
 
         boolean sameCustomer = fabric.getCustomer().equals(color.getCustomer());
         if (!sameCustomer) throw new ConflictException(env.getProperty("product.create.notSameCustomer"));
@@ -58,13 +58,13 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void update(ProductRequestDTO productRequestDTO, String productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new InvalidException(env.getProperty("product.notExisted")));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new InvalidException(env.getProperty("product.notFound")));
 
         boolean validLabel = EnumUtils.isValidEnum(Label.class, productRequestDTO.getLabel());
         if (!validLabel) throw new InvalidException(env.getProperty("product.invalidLabel"));
         Label label = Label.valueOf(productRequestDTO.getLabel());
 
-        Criterion criterion = criterionRepository.findById(productRequestDTO.getCriterionId()).orElseThrow(() -> new InvalidException(env.getProperty("criterion.notExisted")));
+        Criterion criterion = criterionRepository.findById(productRequestDTO.getCriterionId()).orElseThrow(() -> new InvalidException(env.getProperty("criterion.notFound")));
         product.setCriterion(criterion);
         product.setLabel(label);
         productRepository.save(product);
@@ -72,7 +72,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void delete(String productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new InvalidException(env.getProperty("product.notExisted")));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new InvalidException(env.getProperty("product.notFound")));
         if (!(product.getLotList().isEmpty())) throw new ConflictException(env.getProperty("product.used"));
         productRepository.deleteById(productId);
     }

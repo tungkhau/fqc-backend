@@ -1,8 +1,6 @@
 package vn.com.assistant.fqcbackend.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import vn.com.assistant.fqcbackend.entity.enums.Label;
@@ -15,6 +13,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "products")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(generator = "system-uuid")

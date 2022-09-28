@@ -38,14 +38,14 @@ public class ColorServiceImp implements ColorService {
     @Override
     public void create(ColorRequestDTO colorRequestDTO) {
         Color color = ColorMapper.INSTANCE.colorRequestDTOtoColor(colorRequestDTO);
-        Customer customer = customerRepository.findById(colorRequestDTO.getCustomerId()).orElseThrow(() -> new InvalidException(env.getProperty("customer.notExisted")));
+        Customer customer = customerRepository.findById(colorRequestDTO.getCustomerId()).orElseThrow(() -> new InvalidException(env.getProperty("customer.notFound")));
         color.setCustomer(customer);
         colorRepository.save(color);
     }
 
     @Override
     public void delete(String colorId) {
-        Color color = colorRepository.findById(colorId).orElseThrow(() -> new InvalidException(env.getProperty("color.notExisted")));
+        Color color = colorRepository.findById(colorId).orElseThrow(() -> new InvalidException(env.getProperty("color.notFound")));
         if (!(color.getProductList().isEmpty())) throw new ConflictException(env.getProperty("color.used"));
         colorRepository.deleteById(colorId);
     }

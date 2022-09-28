@@ -9,13 +9,17 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import vn.com.assistant.fqcbackend.dto.CustomerRequestDTO;
+import vn.com.assistant.fqcbackend.entity.Color;
 import vn.com.assistant.fqcbackend.entity.Customer;
+import vn.com.assistant.fqcbackend.entity.Fabric;
+import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.service.imp.CustomerServiceImp;
 import vn.com.assistant.fqcbackend.mapper.CustomerMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,13 +43,13 @@ public class CustomerServiceTests {
     CustomerServiceImp customerService;
 
     @Test
-    void canFetch() {
+    void testFetch() {
         customerService.fetch();
         verify(customerRepository).findAllByOrderByCreatedTimeDesc();
     }
 
     @Test
-    void canCreate() {
+    void testCreateSuccess() {
         //given
         CustomerRequestDTO requestDTO = genMockCustomerRequest();
         customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
@@ -59,11 +63,10 @@ public class CustomerServiceTests {
 
         assertThat(capturedCustomer)
                 .usingRecursiveComparison()
-                .ignoringFields("id")
                 .isEqualTo(customer);
     }
     @Test
-    void canUpdate(){
+    void testUpdateSuccess(){
         //give
         CustomerRequestDTO requestDTO = genMockCustomerRequest();
         String customerId = UUID.randomUUID().toString();
@@ -81,13 +84,13 @@ public class CustomerServiceTests {
         assertThat(capturedCustomer).isEqualTo(customer);
     }
     @Test
-    void updateFailedNotFound(){
+    void testUpdateFailedNotFound(){
         //given
         CustomerRequestDTO requestDTO = genMockCustomerRequest();
         String customerId = UUID.randomUUID().toString();
         given(customerRepository.findById(customerId)).willReturn(Optional.empty());
 
-        when(env.getProperty("customer.notExisted")).thenReturn("Msg");
+        when(env.getProperty("customer.notFound")).thenReturn("Msg");
         //when and then
         Assertions.assertThatThrownBy(()-> customerService.update(requestDTO, customerId))
                 .isInstanceOf(InvalidException.class)
@@ -97,7 +100,7 @@ public class CustomerServiceTests {
     }
 
     @Test
-    void canDelete(){
+    void testDeleteSuccess(){
         //give
         String customerId = UUID.randomUUID().toString();
         Customer customer = genMockCustomer();
@@ -110,17 +113,41 @@ public class CustomerServiceTests {
         Mockito.verify(customerRepository).deleteById(customerId);
     }
     @Test
-    void deleteFailedNotFound(){
+    void testDeleteFailedNotFound(){
         //give
         String customerId = UUID.randomUUID().toString();
         Customer customer = genMockCustomer();
         customer.setId(customerId);
         given(customerRepository.findById(customerId)).willReturn(Optional.empty());
 
-        when(env.getProperty("customer.notExisted")).thenReturn("Msg");
+        when(env.getProperty("customer.notFound")).thenReturn("Msg");
         //when and then
         Assertions.assertThatThrownBy(()-> customerService.delete(customerId))
                 .isInstanceOf(InvalidException.class)
+                .hasMessageContaining("Msg");
+
+        verify(customerRepository, never()).delete(any());
+    }
+    @Test
+    void testDeleteFailedUsed(){
+        //give
+        String customerId = UUID.randomUUID().toString();
+        Customer customer = genMockCustomer();
+        List<Color> colorList = new ArrayList<>();
+        colorList.add(new Color(UUID.randomUUID().toString(), "color test", "COLOR1", new ArrayList<>(), customer, null));
+
+        List<Fabric> fabricList = new ArrayList<>();
+        fabricList.add(new Fabric(UUID.randomUUID().toString(), "fabric test", "FABRIC1", new ArrayList<>(), customer, null));
+
+        customer.setFabricList(fabricList);
+        customer.setColorList(colorList);
+        customer.setId(customerId);
+        given(customerRepository.findById(customerId)).willReturn(Optional.of(customer));
+
+        when(env.getProperty("customer.used")).thenReturn("Msg");
+        //when and then
+        Assertions.assertThatThrownBy(()-> customerService.delete(customerId))
+                .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
 
         verify(customerRepository, never()).delete(any());

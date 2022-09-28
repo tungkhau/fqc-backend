@@ -37,14 +37,14 @@ public class FabricServiceImp implements FabricService {
     @Override
     public void create(FabricRequestDTO fabricRequestDTO) {
         Fabric fabric = FabricMapper.INSTANCE.fabricRequestDTOtoFabric(fabricRequestDTO);
-        Customer customer = customerRepository.findById(fabricRequestDTO.getCustomerId()).orElseThrow(() -> new InvalidException(env.getProperty("customer.notExisted")));
+        Customer customer = customerRepository.findById(fabricRequestDTO.getCustomerId()).orElseThrow(() -> new InvalidException(env.getProperty("customer.notFound")));
         fabric.setCustomer(customer);
         fabricRepository.save(fabric);
     }
 
     @Override
     public void delete(String fabricId) {
-        Fabric fabric = fabricRepository.findById(fabricId).orElseThrow(() -> new InvalidException(env.getProperty("fabric.notExisted")));
+        Fabric fabric = fabricRepository.findById(fabricId).orElseThrow(() -> new InvalidException(env.getProperty("fabric.notFound")));
         if (!(fabric.getProductList().isEmpty())) throw new ConflictException(env.getProperty("fabric.used"));
         fabricRepository.deleteById(fabricId);
     }
