@@ -63,7 +63,6 @@ public class CustomerServiceTests {
 
         assertThat(capturedCustomer)
                 .usingRecursiveComparison()
-                .ignoringFields("id")
                 .isEqualTo(customer);
     }
     @Test
