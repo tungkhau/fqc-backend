@@ -5,6 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import vn.com.assistant.fqcbackend.dto.PasswordRequestDTO;
 import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
@@ -47,6 +48,14 @@ public class StaffController {
     public ResponseBodyDTO resetPassword(@PathVariable String staffId) {
         staffService.resetPassword(staffId);
         return new ResponseBodyDTO(env.getProperty("staff.resetPassword"), "OK", null);
+    }
+
+    @PostMapping(value = "/staffs/{staffId}/changePassword")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseBodyDTO changePassword(@Valid @RequestBody PasswordRequestDTO passwordRequestDTO,
+                                        @PathVariable String staffId) {
+        staffService.changePassword(passwordRequestDTO, staffId);
+        return new ResponseBodyDTO(env.getProperty("staff.changePassword"), "OK", null);
     }
 
 }

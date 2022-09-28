@@ -1,5 +1,6 @@
 package vn.com.assistant.fqcbackend.service;
 
+import vn.com.assistant.fqcbackend.dto.PasswordRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffRequestDTO;
 import vn.com.assistant.fqcbackend.dto.StaffResponseDTO;
 
@@ -13,4 +14,5 @@ public interface StaffService {
     void update(StaffRequestDTO staffRequestDTO, String staffId);
 
     void resetPassword(String staffId);
+    void changePassword (PasswordRequestDTO passwordRequestDTO, String id);
 }
