@@ -41,6 +41,12 @@ public class FabricServiceTests {
     @Mock
     CustomerRepository customerRepository;
     @Mock
+    Customer customer;
+    @Mock
+    Fabric fabric;
+    @Mock
+    List<Product> products;
+    @Mock
     Environment env;
     @Captor
     private ArgumentCaptor<Fabric> fabricArgumentCaptor;
@@ -57,10 +63,10 @@ public class FabricServiceTests {
     void testCreatedSuccess(){
         //given
         FabricRequestDTO requestDTO = genMockFabricRequest();
-        Customer customer = genMockCustomer();
         Fabric fabric = FabricMapper.INSTANCE.fabricRequestDTOtoFabric(requestDTO);
         fabricArgumentCaptor = ArgumentCaptor.forClass(Fabric.class);
         given(customerRepository.findById(requestDTO.getCustomerId())).willReturn(Optional.of(customer));
+        fabric.setCustomer(customer);
 
         //when
         fabricService.create(requestDTO);
@@ -71,7 +77,6 @@ public class FabricServiceTests {
 
         assertThat(capturedColor)
                 .usingRecursiveComparison()
-                .ignoringFields("customer")
                 .isEqualTo(fabric);
     }
 
@@ -79,8 +84,6 @@ public class FabricServiceTests {
     void testCreatedFailedInvalidCustomer(){
         //given
         FabricRequestDTO requestDTO = genMockFabricRequest();
-        Fabric fabric = FabricMapper.INSTANCE.fabricRequestDTOtoFabric(requestDTO);
-        fabricArgumentCaptor = ArgumentCaptor.forClass(Fabric.class);
         given(customerRepository.findById(requestDTO.getCustomerId())).willReturn(Optional.empty());
         when(env.getProperty("customer.notFound")).thenReturn("Msg");
 
@@ -93,23 +96,21 @@ public class FabricServiceTests {
     @Test
     void testDeleteSuccess(){
         //given
-        Fabric fabric = genMockFabric();
-        String fabricId = "Test id";
-        given(fabricRepository.findById(fabricId)).willReturn(Optional.of(fabric));
+        given(fabricRepository.findById(fabric.getId())).willReturn(Optional.of(fabric));
         //when
-        fabricService.delete(fabricId);
+        fabricService.delete(fabric.getId());
         //then
-        verify(fabricRepository).deleteById(fabricId);
+        verify(fabricRepository).deleteById(fabric.getId());
     }
 
     @Test
     void testDeleteFailedNotFound(){
         //given
-        String colorId = "Test id";
-        given(fabricRepository.findById(colorId)).willReturn(Optional.empty());
+        String fabricId = "Test id";
+        given(fabricRepository.findById(fabricId)).willReturn(Optional.empty());
         when(env.getProperty("fabric.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(()-> fabricService.delete(colorId))
+        assertThatThrownBy(()-> fabricService.delete(fabricId))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
@@ -118,15 +119,11 @@ public class FabricServiceTests {
     @Test
     void testDeleteFailedUsed(){
         //given
-        Fabric fabric = genMockFabric();
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Test id", Label.FIRST, fabric, null, null, new ArrayList<>(), null));
-        String colorId = "Test id";
-        fabric.setProductList(products);
-        given(fabricRepository.findById(colorId)).willReturn(Optional.of(fabric));
+        given(fabricRepository.findById(fabric.getId())).willReturn(Optional.of(fabric));
+        given(fabric.getProductList()).willReturn(products);
         when(env.getProperty("fabric.used")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(()-> fabricService.delete(colorId))
+        assertThatThrownBy(()-> fabricService.delete(fabric.getId()))
                 .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
     }
@@ -139,21 +136,4 @@ public class FabricServiceTests {
         return requestDTO;
     }
 
-    private Fabric genMockFabric(){
-        return new Fabric("Test id", "fabric test", "FABRIC1", new ArrayList<>(), genMockCustomer(), null);
-    }
-
-    private Customer genMockCustomer(){
-        Customer customer = new Customer();
-        customer.setId("123");
-        customer.setCode("CUSTOMER");
-        customer.setAddress("Address");
-        customer.setFullName("Nguyen Van A");
-        customer.setName("ANV");
-        customer.setPhoneNumber("456");
-        customer.setTaxCode("789");
-        customer.setColorList(new ArrayList<>());
-        customer.setFabricList(new ArrayList<>());
-        return customer;
-    }
 }

@@ -40,6 +40,10 @@ public class CriterionServiceTests {
     CriterionRepository criterionRepository;
     @Mock
     Environment env;
+    @Mock
+    Criterion criterion;
+    @Mock
+    List<Product> products;
     @Captor
     private ArgumentCaptor<Criterion> criteriaArgumentCaptor;
     @InjectMocks
@@ -57,7 +61,6 @@ public class CriterionServiceTests {
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
         criteriaArgumentCaptor = ArgumentCaptor.forClass(Criterion.class);
         Criterion criterion = CriterionMapper.INSTANCE.criterionRequestDTOtoCriterion(requestDTO);
-
         //when
         criteriaService.create(requestDTO);
         //then
@@ -90,7 +93,7 @@ public class CriterionServiceTests {
         //given
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
         requestDTO.setUnit("Unit");
-
+        requestDTO.setGrades(genMockListGradeRequest());
         when(env.getProperty("criterion.create.invalidUnit")).thenReturn("Msg");
         //when and then
         Assertions.assertThatThrownBy(()-> criteriaService.create(requestDTO))
@@ -104,7 +107,6 @@ public class CriterionServiceTests {
     void testDeleteSuccess(){
         //give
         String criteriaId = UUID.randomUUID().toString();
-        Criterion criterion = genMockCriteria();
         criterion.setId(criteriaId);
 
         given(criterionRepository.findById(criteriaId)).willReturn(Optional.of(criterion));
@@ -118,20 +120,14 @@ public class CriterionServiceTests {
     @Test
     void testDeleteFailedUsed(){
         //give
-        String criteriaId = UUID.randomUUID().toString();
-        Criterion criterion = genMockCriteria();
-
-        List<Product> products = new ArrayList<>();
-        products.add(genMockProduct());
-
-        criterion.setProductList(products);
-        criterion.setId(criteriaId);
-
-        given(criterionRepository.findById(criteriaId)).willReturn(Optional.of(criterion));
+        given(criterionRepository.findById(criterion.getId())).willReturn(Optional.of(criterion));
 
         when(env.getProperty("criterion.used")).thenReturn("Msg");
+
+        given(criterion.getProductList()).willReturn(products);
+
         //when and then
-        Assertions.assertThatThrownBy(()-> criteriaService.delete(criteriaId))
+        Assertions.assertThatThrownBy(()-> criteriaService.delete(criterion.getId()))
                 .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
     }
@@ -158,15 +154,6 @@ public class CriterionServiceTests {
         return requestDTO;
     }
 
-    private Criterion genMockCriteria(){
-        Criterion criterion = new Criterion();
-        criterion.setId(UUID.randomUUID().toString());
-        criterion.setUnit(Unit.SQUARE_METER);
-        criterion.setName("Name");
-        criterion.setGradeList(new ArrayList<>());
-        criterion.setProductList(new ArrayList<>());
-        return criterion;
-    }
     private List<GradeRequestDTO> genMockListGradeRequest(){
         List<GradeRequestDTO> list = new ArrayList<>();
         list.add(new GradeRequestDTO(21));
@@ -183,10 +170,6 @@ public class CriterionServiceTests {
         list.add(new GradeRequestDTO(21));
         list.add(new GradeRequestDTO(40));
         return list;
-    }
-
-    private Product genMockProduct(){
-        return new Product("Test id", Label.FIRST, null, null, null, new ArrayList<>(), null);
     }
 
 }

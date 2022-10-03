@@ -61,7 +61,7 @@ public class ProductServiceImp implements ProductService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new InvalidException(env.getProperty("product.notFound")));
 
         boolean validLabel = EnumUtils.isValidEnum(Label.class, productRequestDTO.getLabel());
-        if (!validLabel) throw new InvalidException(env.getProperty("product.invalidLabel"));
+        if (!validLabel) throw new InvalidException(env.getProperty("product.create.invalidLabel"));
         Label label = Label.valueOf(productRequestDTO.getLabel());
 
         Criterion criterion = criterionRepository.findById(productRequestDTO.getCriterionId()).orElseThrow(() -> new InvalidException(env.getProperty("criterion.notFound")));

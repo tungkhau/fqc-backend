@@ -18,7 +18,6 @@ import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.service.imp.CustomerServiceImp;
 import vn.com.assistant.fqcbackend.mapper.CustomerMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +35,11 @@ public class CustomerServiceTests {
     @Mock
     CustomerRepository customerRepository;
     @Mock
+    Customer customer;
+    @Mock
     Environment env;
+    @Mock
+    List<Fabric> fabricList;
     @Captor
     private ArgumentCaptor<Customer> customerArgumentCaptor;
     @InjectMocks
@@ -70,7 +73,6 @@ public class CustomerServiceTests {
         //give
         CustomerRequestDTO requestDTO = genMockCustomerRequest();
         String customerId = UUID.randomUUID().toString();
-        Customer customer = genMockCustomer();
         customer.setId(customerId);
         given(customerRepository.findById(customerId)).willReturn(Optional.of(customer));
         customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
@@ -102,21 +104,17 @@ public class CustomerServiceTests {
     @Test
     void testDeleteSuccess(){
         //give
-        String customerId = UUID.randomUUID().toString();
-        Customer customer = genMockCustomer();
-        customer.setId(customerId);
-        given(customerRepository.findById(customerId)).willReturn(Optional.of(customer));
+        given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
 
         //when
-        customerService.delete(customerId);
+        customerService.delete(customer.getId());
         //then
-        Mockito.verify(customerRepository).deleteById(customerId);
+        Mockito.verify(customerRepository).deleteById(customer.getId());
     }
     @Test
     void testDeleteFailedNotFound(){
         //give
         String customerId = UUID.randomUUID().toString();
-        Customer customer = genMockCustomer();
         customer.setId(customerId);
         given(customerRepository.findById(customerId)).willReturn(Optional.empty());
 
@@ -132,18 +130,10 @@ public class CustomerServiceTests {
     void testDeleteFailedUsed(){
         //give
         String customerId = UUID.randomUUID().toString();
-        Customer customer = genMockCustomer();
-        List<Color> colorList = new ArrayList<>();
-        colorList.add(new Color(UUID.randomUUID().toString(), "color test", "COLOR1", new ArrayList<>(), customer, null));
 
-        List<Fabric> fabricList = new ArrayList<>();
-        fabricList.add(new Fabric(UUID.randomUUID().toString(), "fabric test", "FABRIC1", new ArrayList<>(), customer, null));
-
-        customer.setFabricList(fabricList);
-        customer.setColorList(colorList);
         customer.setId(customerId);
         given(customerRepository.findById(customerId)).willReturn(Optional.of(customer));
-
+        given(customer.getFabricList()).willReturn(fabricList);
         when(env.getProperty("customer.used")).thenReturn("Msg");
         //when and then
         Assertions.assertThatThrownBy(()-> customerService.delete(customerId))
@@ -163,16 +153,4 @@ public class CustomerServiceTests {
         return requestDTO;
     }
 
-    private Customer genMockCustomer(){
-        Customer customer = new Customer();
-        customer.setCode("CUSTOMER");
-        customer.setAddress("Address");
-        customer.setFullName("Nguyen Van A");
-        customer.setName("ANV");
-        customer.setPhoneNumber("456");
-        customer.setTaxCode("789");
-        customer.setColorList(new ArrayList<>());
-        customer.setFabricList(new ArrayList<>());
-        return customer;
-    }
 }

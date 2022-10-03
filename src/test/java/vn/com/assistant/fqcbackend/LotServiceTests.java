@@ -10,8 +10,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import vn.com.assistant.fqcbackend.dto.LotRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Lot;
+import vn.com.assistant.fqcbackend.entity.Product;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.repository.LotRepository;
+import vn.com.assistant.fqcbackend.repository.ProductRepository;
 import vn.com.assistant.fqcbackend.service.imp.LotServiceImp;
 import vn.com.assistant.fqcbackend.mapper.LotMapper;
 
@@ -32,7 +34,13 @@ public class LotServiceTests {
     @Mock
     LotRepository lotRepository;
     @Mock
+    ProductRepository productRepository;
+    @Mock
+    Product product;
+    @Mock
     Environment env;
+    @Mock
+    Lot lot;
     @Captor
     private ArgumentCaptor<Lot> lotArgumentCaptor;
     @InjectMocks
@@ -41,7 +49,7 @@ public class LotServiceTests {
     @Test
     void canFetch() {
         lotService.fetch();
-        verify(lotRepository).findAll();
+        verify(lotRepository).findAllByOrderByCreatedTimeDesc();
     }
 
     @Test
@@ -50,6 +58,8 @@ public class LotServiceTests {
         LotRequestDTO requestDTO = genMockLotRequest();
         lotArgumentCaptor = ArgumentCaptor.forClass(Lot.class);
         Lot lot = LotMapper.INSTANCE.lotRequestDTOtoLot(requestDTO);
+        given(productRepository.findById(requestDTO.getProductId())).willReturn(Optional.of(product));
+        lot.setProduct(product);
 
         //when
         lotService.create(requestDTO);
@@ -59,7 +69,6 @@ public class LotServiceTests {
 
         assertThat(capturedLot)
                 .usingRecursiveComparison()
-                .ignoringFields("id")
                 .isEqualTo(lot);
     }
     @Test
@@ -67,7 +76,6 @@ public class LotServiceTests {
         //give
         LotRequestDTO requestDTO = genMockLotRequest();
         String lotId = UUID.randomUUID().toString();
-        Lot lot = genMockLot();
         lot.setId(lotId);
         given(lotRepository.findById(lotId)).willReturn(Optional.of(lot));
         lotArgumentCaptor = ArgumentCaptor.forClass(Lot.class);
@@ -99,21 +107,16 @@ public class LotServiceTests {
     @Test
     void canDelete(){
         //give
-        String lotId = UUID.randomUUID().toString();
-        Lot lot = genMockLot();
-        lot.setId(lotId);
-        given(lotRepository.findById(lotId)).willReturn(Optional.of(lot));
+        given(lotRepository.findById(lot.getId())).willReturn(Optional.of(lot));
 
         //when
-        lotService.delete(lotId);
+        lotService.delete(lot.getId());
         //then
-        Mockito.verify(lotRepository).deleteById(lotId);
+        Mockito.verify(lotRepository).deleteById(lot.getId());
     }
     @Test
     void deleteFailedNotFound(){
-        //give
         //given
-        LotRequestDTO requestDTO = genMockLotRequest();
         String lotId = UUID.randomUUID().toString();
         given(lotRepository.findById(lotId)).willReturn(Optional.empty());
 
@@ -130,19 +133,7 @@ public class LotServiceTests {
         requestDTO.setCode("Code request");
         requestDTO.setExpectedQuantity(1);
         requestDTO.setExpectedWeight(2);
-        requestDTO.setOrderNumber(2);
+        requestDTO.setOrderCode("3");
         return requestDTO;
-    }
-
-    private Lot genMockLot(){
-        Lot lot = new Lot();
-        lot.setId(UUID.randomUUID().toString());
-        lot.setCode("Code request");
-        lot.setExpectedQuantity(4);
-        lot.setExpectedWeight(5);
-        lot.setOrderCode(6);
-        lot.setInspectingSessionList(new ArrayList<>());
-        lot.setMeasurement(null);
-        return lot;
     }
 }

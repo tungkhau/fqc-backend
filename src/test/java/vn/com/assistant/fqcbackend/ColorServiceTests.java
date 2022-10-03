@@ -11,7 +11,6 @@ import vn.com.assistant.fqcbackend.dto.ColorRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Color;
 import vn.com.assistant.fqcbackend.entity.Customer;
 import vn.com.assistant.fqcbackend.entity.Product;
-import vn.com.assistant.fqcbackend.entity.enums.Label;
 import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
 import vn.com.assistant.fqcbackend.mapper.ColorMapper;
@@ -26,8 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = {ColorServiceImp.class})
@@ -39,8 +37,15 @@ public class ColorServiceTests {
     CustomerRepository customerRepository;
     @Mock
     Environment env;
+    @Mock
+    Color color;
+    @Mock
+    Customer customer;
+    @Mock
+    List<Product> productList;
     @Captor
     private ArgumentCaptor<Color> colorArgumentCaptor;
+    @Spy
     @InjectMocks
     ColorServiceImp colorService;
 
@@ -54,10 +59,10 @@ public class ColorServiceTests {
     void testCreatedSuccess(){
         //given
         ColorRequestDTO requestDTO = genMockColorRequest();
-        Customer customer = genMockCustomer();
         Color color = ColorMapper.INSTANCE.colorRequestDTOtoColor(requestDTO);
         colorArgumentCaptor = ArgumentCaptor.forClass(Color.class);
         given(customerRepository.findById(requestDTO.getCustomerId())).willReturn(Optional.of(customer));
+        color.setCustomer(customer);
 
         //when
         colorService.create(requestDTO);
@@ -68,7 +73,6 @@ public class ColorServiceTests {
 
         assertThat(capturedColor)
                 .usingRecursiveComparison()
-                .ignoringFields("customer")
                 .isEqualTo(color);
     }
 
@@ -76,7 +80,6 @@ public class ColorServiceTests {
     void testCreatedFailedInvalidCustomer(){
         //given
         ColorRequestDTO requestDTO = genMockColorRequest();
-        Color color = ColorMapper.INSTANCE.colorRequestDTOtoColor(requestDTO);
         colorArgumentCaptor = ArgumentCaptor.forClass(Color.class);
         given(customerRepository.findById(requestDTO.getCustomerId())).willReturn(Optional.empty());
         when(env.getProperty("customer.notFound")).thenReturn("Msg");
@@ -90,7 +93,6 @@ public class ColorServiceTests {
     @Test
     void testDeleteSuccess(){
         //given
-        Color color = genMockColor();
         String colorId = "Test id";
         given(colorRepository.findById(colorId)).willReturn(Optional.of(color));
         //when
@@ -116,10 +118,8 @@ public class ColorServiceTests {
     @Test
     void testDeleteFailedUsed(){
         //given
-        Color color = genMockColor();
         given(colorRepository.findById(color.getId())).willReturn(Optional.of(color));
-
-        given(color.getProductList().isEmpty()).willReturn(false);
+        given(color.getProductList()).willReturn(productList);
 
         when(env.getProperty("color.used")).thenReturn("Msg");
         //when & then
@@ -136,21 +136,4 @@ public class ColorServiceTests {
         return requestDTO;
     }
 
-    private Color genMockColor(){
-        return new Color("Test id", "color test", "COLOR1", new ArrayList<>(), genMockCustomer(), null);
-    }
-
-    private Customer genMockCustomer(){
-        Customer customer = new Customer();
-        customer.setId("123");
-        customer.setCode("CUSTOMER");
-        customer.setAddress("Address");
-        customer.setFullName("Nguyen Van A");
-        customer.setName("ANV");
-        customer.setPhoneNumber("456");
-        customer.setTaxCode("789");
-        customer.setColorList(new ArrayList<>());
-        customer.setFabricList(new ArrayList<>());
-        return customer;
-    }
 }

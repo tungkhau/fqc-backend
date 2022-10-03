@@ -43,6 +43,14 @@ public class ProductServiceTests {
     @Mock
     CriterionRepository criterionRepository;
     @Mock
+    Product product;
+    @Mock
+    Customer customer;
+    @Mock
+    Criterion criterion;
+    @Mock
+    List<Lot> lots;
+    @Mock
     Environment env;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
@@ -56,20 +64,23 @@ public class ProductServiceTests {
     }
 
     @Test
-    void testCreateSuccess(){
+    void testCreateSuccess() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         Product product = ProductMapper.INSTANCE.productRequestDTOtoProduct(requestDTO);
+
         Fabric fabric = genMockFabric();
         Color color = genMockColor();
 
-        Customer customer = genMockCustomer();
         fabric.setCustomer(customer);
         color.setCustomer(customer);
 
         given(fabricRepository.findById(requestDTO.getFabricId())).willReturn(Optional.of(fabric));
         given(colorRepository.findById(requestDTO.getColorId())).willReturn(Optional.of(color));
         productArgumentCaptor = ArgumentCaptor.forClass(Product.class);
+
+        product.setColor(color);
+        product.setFabric(fabric);
 
         //when
         productService.create(requestDTO);
@@ -79,20 +90,18 @@ public class ProductServiceTests {
 
         assertThat(capturedProduct)
                 .usingRecursiveComparison()
-                .ignoringFields("color", "fabric")
                 .isEqualTo(product);
 
     }
 
 
     @Test
-    void testCreateFailedDifferentCustomer(){
+    void testCreateFailedDifferentCustomer() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         Fabric fabric = genMockFabric();
         Color color = genMockColor();
 
-        Customer customer = genMockCustomer();
         fabric.setCustomer(customer);
 
         given(fabricRepository.findById(requestDTO.getFabricId())).willReturn(Optional.of(fabric));
@@ -100,13 +109,13 @@ public class ProductServiceTests {
 
         when(env.getProperty("product.create.notSameCustomer")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.create(requestDTO))
+        assertThatThrownBy(() -> productService.create(requestDTO))
                 .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testCreateFailedInvalidColor(){
+    void testCreateFailedInvalidColor() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         Fabric fabric = genMockFabric();
@@ -116,13 +125,13 @@ public class ProductServiceTests {
 
         when(env.getProperty("color.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.create(requestDTO))
+        assertThatThrownBy(() -> productService.create(requestDTO))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testCreateFailedInvalidFabric(){
+    void testCreateFailedInvalidFabric() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
 
@@ -130,13 +139,13 @@ public class ProductServiceTests {
 
         when(env.getProperty("fabric.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.create(requestDTO))
+        assertThatThrownBy(() -> productService.create(requestDTO))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testUpdateFailedNotFound(){
+    void testUpdateFailedNotFound() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         String productId = "test id";
@@ -144,60 +153,54 @@ public class ProductServiceTests {
 
         when(env.getProperty("product.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.update(requestDTO, productId))
+        assertThatThrownBy(() -> productService.update(requestDTO, productId))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testUpdateFailedInvalidLabel(){
+    void testUpdateFailedInvalidLabel() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         requestDTO.setLabel("Test");
         String productId = "Test id";
-        Product product = genMockProduct();
 
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
 
         when(env.getProperty("product.create.invalidLabel")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.update(requestDTO, productId))
+        assertThatThrownBy(() -> productService.update(requestDTO, productId))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testUpdateFailedInvalidCriteria(){
+    void testUpdateFailedInvalidCriteria() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
         String productId = "Test id";
-        Product product = genMockProduct();
 
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         given(criterionRepository.findById(requestDTO.getCriterionId())).willReturn(Optional.empty());
 
         when(env.getProperty("criterion.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.update(requestDTO, productId))
+        assertThatThrownBy(() -> productService.update(requestDTO, productId))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testUpdateSuccess(){
+    void testUpdateSuccess() {
         //given
         ProductRequestDTO requestDTO = genMockProductRequest();
-        String productId = "Test id";
-        Product product = genMockProduct();
-        Criterion criterion = genMockCriteria();
-
-        given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
         given(criterionRepository.findById(requestDTO.getCriterionId())).willReturn(Optional.of(criterion));
 
         productArgumentCaptor = ArgumentCaptor.forClass(Product.class);
 
         //when
-        productService.update(requestDTO, productId);
+        productService.update(requestDTO, product.getId());
         Mockito.verify(productRepository).save(productArgumentCaptor.capture());
         Product capturedProduct = productArgumentCaptor.getValue();
 
@@ -205,57 +208,41 @@ public class ProductServiceTests {
     }
 
     @Test
-    void testDeleteFailedNotFound(){
+    void testDeleteFailedNotFound() {
         //given
-        String productId = "test id";
-        given(productRepository.findById(productId)).willReturn(Optional.empty());
+        given(productRepository.findById(product.getId())).willReturn(Optional.empty());
 
         when(env.getProperty("product.notFound")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.delete(productId))
+        assertThatThrownBy(() -> productService.delete(product.getId()))
                 .isInstanceOf(InvalidException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testDeleteFailedUsed(){
+    void testDeleteFailedUsed() {
         //given
-        String productId = "Test id";
-        Product product = genMockProduct();
-        List<Lot> lots = new ArrayList<>();
-        lots.add(new Lot("Lot id", "Lot code", null, null, null, new ArrayList<>(), null));
-        product.setLotList(lots);
-
-        given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
+        given(product.getLotList()).willReturn(lots);
 
         when(env.getProperty("product.used")).thenReturn("Msg");
         //when & then
-        assertThatThrownBy(() ->productService.delete(productId))
+        assertThatThrownBy(() -> productService.delete(product.getId()))
                 .isInstanceOf(ConflictException.class)
                 .hasMessageContaining("Msg");
     }
 
     @Test
-    void testDeleteSuccess(){
+    void testDeleteSuccess() {
         //given
-        String productId = "Test id";
-        Product product = genMockProduct();
-        given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
         //when
-        productService.delete(productId);
+        productService.delete(product.getId());
         //then
-        verify(productRepository).deleteById(productId);
+        verify(productRepository).deleteById(product.getId());
     }
 
-    private Color genMockColor(){
-        return new Color("Color id", "color test", "COLOR1", new ArrayList<>(), null, null);
-    }
-
-    private Fabric genMockFabric(){
-        return new Fabric("Fabric id", "fabric test", "FABRIC1", new ArrayList<>(), null, null);
-    }
-
-    private ProductRequestDTO genMockProductRequest(){
+    private ProductRequestDTO genMockProductRequest() {
         ProductRequestDTO requestDTO = new ProductRequestDTO();
         requestDTO.setColorId("Color id");
         requestDTO.setFabricId("Fabric id");
@@ -264,31 +251,11 @@ public class ProductServiceTests {
         return requestDTO;
     }
 
-    private Product genMockProduct(){
-        return new Product("Test id", Label.FIRST, genMockFabric(), genMockColor(), null, new ArrayList<>(), null);
-
+    private Color genMockColor(){
+        return new Color("Color id", "color test", "COLOR1", new ArrayList<>(), null, null);
     }
 
-    private Customer genMockCustomer(){
-        Customer customer = new Customer();
-        customer.setId("123");
-        customer.setCode("CUSTOMER");
-        customer.setAddress("Address");
-        customer.setFullName("Nguyen Van A");
-        customer.setName("ANV");
-        customer.setPhoneNumber("456");
-        customer.setTaxCode("789");
-        customer.setColorList(new ArrayList<>());
-        customer.setFabricList(new ArrayList<>());
-        return customer;
-    }
-
-    private Criterion genMockCriteria(){
-        Criterion criterion = new Criterion();
-        criterion.setId("Criterion id");
-        criterion.setUnit(Unit.SQUARE_METER);
-        criterion.setName("Name");
-        criterion.setGradeList(new ArrayList<>());
-        return criterion;
+    private Fabric genMockFabric(){
+        return new Fabric("Fabric id", "fabric test", "FABRIC1", new ArrayList<>(), null, null);
     }
 }
