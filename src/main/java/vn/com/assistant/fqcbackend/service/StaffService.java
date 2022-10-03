@@ -14,5 +14,4 @@ public interface StaffService {
     void update(StaffRequestDTO staffRequestDTO, String staffId);
 
     void resetPassword(String staffId);
-    void changePassword (PasswordRequestDTO passwordRequestDTO, String id);
 }

@@ -58,22 +58,4 @@ public class StaffServiceImp implements StaffService {
         user.setEncryptedPassword(passwordEncoder.encode(defaultPassword));
         userRepository.save(user);
     }
-    @Override
-    public void changePassword(PasswordRequestDTO passwordRequestDTO, String id){
-        User user = userRepository.findById(id).orElseThrow(() -> new InvalidException(env.getProperty("staff.notExisted")));
-        validationPassword(passwordRequestDTO, user);
-        user.setEncryptedPassword(passwordEncoder.encode(passwordRequestDTO.getNewPassword()));
-        userRepository.save(user);
-    }
-
-    private void validationPassword(PasswordRequestDTO passwordRequestDTO, User user){
-        System.out.println(passwordRequestDTO.getOldPassword());
-        System.out.println(user.getEncryptedPassword());
-        System.out.println(passwordEncoder.matches(passwordRequestDTO.getOldPassword(), user.getEncryptedPassword()));
-        if(!passwordEncoder.matches(passwordRequestDTO.getOldPassword(), user.getEncryptedPassword()))
-            throw new InvalidException(env.getProperty("staff.wrongPassword"));
-
-        if(!passwordRequestDTO.getNewPassword().equals(passwordRequestDTO.getConfirmPassword()))
-            throw new InvalidException(env.getProperty("staff.notMatchPassword"));
-    }
 }

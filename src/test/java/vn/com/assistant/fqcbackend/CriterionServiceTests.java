@@ -12,7 +12,6 @@ import vn.com.assistant.fqcbackend.dto.CriterionRequestDTO;
 import vn.com.assistant.fqcbackend.dto.GradeRequestDTO;
 import vn.com.assistant.fqcbackend.entity.Criterion;
 import vn.com.assistant.fqcbackend.entity.Product;
-import vn.com.assistant.fqcbackend.entity.enums.Label;
 import vn.com.assistant.fqcbackend.entity.enums.Unit;
 import vn.com.assistant.fqcbackend.exception.ConflictException;
 import vn.com.assistant.fqcbackend.exception.InvalidException;
@@ -77,6 +76,21 @@ public class CriterionServiceTests {
         //given
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
         requestDTO.setGrades(genMockListGradeRequestFail());
+
+        when(env.getProperty("criterion.create.invalidGradeList")).thenReturn("Msg");
+        //when and then
+        Assertions.assertThatThrownBy(()-> criteriaService.create(requestDTO))
+                .isInstanceOf(InvalidException.class)
+                .hasMessageContaining("Msg");
+
+        verify(criterionRepository, never()).delete(any());
+
+    }
+    @Test
+    void testCreateFailedGradeListEmpty(){
+        //given
+        CriterionRequestDTO requestDTO = genMockCriteriaRequest();
+        requestDTO.setGrades(new ArrayList<>());
 
         when(env.getProperty("criterion.create.invalidGradeList")).thenReturn("Msg");
         //when and then

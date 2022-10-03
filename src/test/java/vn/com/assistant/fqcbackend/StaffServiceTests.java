@@ -126,11 +126,6 @@ public class StaffServiceTests {
         assertThat(capturedCustomer.getPassword()).isEqualTo(defaultPassword);
     }
 
-    @Test
-    void canChangePassword() {
-        //given
-    }
-
     private StaffRequestDTO genMockStaffRequest(){
         StaffRequestDTO requestDTO = new StaffRequestDTO();
         requestDTO.setCode("STAFF1");

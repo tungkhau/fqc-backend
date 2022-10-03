@@ -50,12 +50,4 @@ public class StaffController {
         return new ResponseBodyDTO(env.getProperty("staff.resetPassword"), "OK", null);
     }
 
-    @PostMapping(value = "/staffs/{staffId}/changePassword")
-    @ResponseStatus(value = HttpStatus.OK)
-    public ResponseBodyDTO changePassword(@Valid @RequestBody PasswordRequestDTO passwordRequestDTO,
-                                        @PathVariable String staffId) {
-        staffService.changePassword(passwordRequestDTO, staffId);
-        return new ResponseBodyDTO(env.getProperty("staff.changePassword"), "OK", null);
-    }
-
 }
