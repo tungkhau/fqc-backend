@@ -12,7 +12,13 @@ public class LotResponseDTO {
     private Integer expectedWeight;
     private String orderCode;
 
-    private String productId;
+    private String fabricCode;
+    private String fabricName;
+
+    private String colorCode;
+    private String colorName;
+
+    private String customerName;
 
     private MeasurementResponseDTO measurement;
 }
