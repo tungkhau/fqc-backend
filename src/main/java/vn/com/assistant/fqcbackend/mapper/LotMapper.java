@@ -13,6 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface LotMapper extends MapStructMapper {
     LotMapper INSTANCE = Mappers.getMapper(LotMapper.class);
+    @Mapping(target = "productId", source = "product.id")
     LotResponseDTO lotToLotResponseDTO (Lot lot);
     List<LotResponseDTO> listLotToLotResponseDTO (List<Lot> lots);
     Lot lotRequestDTOtoLot(LotRequestDTO lotRequestDTO);

@@ -12,5 +12,7 @@ public class LotResponseDTO {
     private Integer expectedWeight;
     private String orderCode;
 
+    private String productId;
+
     private MeasurementResponseDTO measurement;
 }

@@ -76,7 +76,7 @@ public class CriterionServiceTests {
     void testCreateFailedInvalidGradeList(){
         //given
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
-        requestDTO.setGrades(genMockListGradeRequestFail());
+        requestDTO.setGradeRequestDTOList(genMockListGradeRequestFail());
 
         when(env.getProperty("criterion.create.invalidGradeList")).thenReturn("Msg");
         //when and then
@@ -93,7 +93,7 @@ public class CriterionServiceTests {
         //given
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
         requestDTO.setUnit("Unit");
-        requestDTO.setGrades(genMockListGradeRequest());
+        requestDTO.setGradeRequestDTOList(genMockListGradeRequest());
         when(env.getProperty("criterion.create.invalidUnit")).thenReturn("Msg");
         //when and then
         Assertions.assertThatThrownBy(()-> criteriaService.create(requestDTO))
@@ -150,7 +150,7 @@ public class CriterionServiceTests {
         CriterionRequestDTO requestDTO = new CriterionRequestDTO();
         requestDTO.setName("Name request");
         requestDTO.setUnit(Unit.METER.name());
-        requestDTO.setGrades(genMockListGradeRequest());
+        requestDTO.setGradeRequestDTOList(genMockListGradeRequest());
         return requestDTO;
     }
 
