@@ -32,7 +32,7 @@ public class CriterionServiceImp implements CriterionService {
 
     @Override
     public void create(CriterionRequestDTO criterionRequestDTO) {
-        boolean validGradeList = checkGradeListValid(criterionRequestDTO.getGrades());
+        boolean validGradeList = checkGradeListValid(criterionRequestDTO.getGradeRequestDTOList());
         if(!validGradeList) throw new InvalidException(env.getProperty("criterion.create.invalidGradeList"));
 
         boolean validUnit = EnumUtils.isValidEnum(Unit.class, criterionRequestDTO.getUnit());

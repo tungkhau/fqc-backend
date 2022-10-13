@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface LotService {
     List<LotResponseDTO> fetch();
+    LotResponseDTO get(String lotCode);
     void create(LotRequestDTO lotRequestDTO);
     void update(LotRequestDTO lotRequestDTO, String lotId);
     void delete(String lotId);

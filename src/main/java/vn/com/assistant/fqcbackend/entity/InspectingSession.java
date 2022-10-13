@@ -23,7 +23,7 @@ public class InspectingSession {
     private String code;
 
     @Column(name = "machine_no", updatable = false, nullable = false)
-    private String machineNo;
+    private Integer machineNo;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

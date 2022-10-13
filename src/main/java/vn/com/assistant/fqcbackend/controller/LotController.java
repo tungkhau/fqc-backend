@@ -24,8 +24,15 @@ public class LotController {
     @GetMapping(value = "/lots")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public ResponseBodyDTO fetch() {
-        List<LotResponseDTO> lotResponseDTOS = lotService.fetch();
-        return new ResponseBodyDTO(null, "ACCEPTED", lotResponseDTOS);
+        List<LotResponseDTO> lotResponseDTOList = lotService.fetch();
+        return new ResponseBodyDTO(null, "ACCEPTED", lotResponseDTOList);
+    }
+
+    @GetMapping(value = "/lots/{lotCode}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public ResponseBodyDTO get(@PathVariable String lotCode) {
+        LotResponseDTO lotResponseDTO = lotService.get(lotCode);
+        return new ResponseBodyDTO(null, "ACCEPTED", lotResponseDTO);
     }
 
     @PostMapping(value = "/lots")

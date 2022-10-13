@@ -10,14 +10,14 @@ import java.util.List;
 public class CriterionRequestDTO {
     private String name;
     private String unit;
-    private List<GradeRequestDTO> grades;
+    private List<GradeRequestDTO> gradeRequestDTOList;
 
     @Override
     public String toString() {
         return "CriterionRequestDTO{" +
                 "name='" + name + '\'' +
                 ", unit='" + unit + '\'' +
-                ", grades=" + grades +
+                ", grades=" + gradeRequestDTOList +
                 '}';
     }
 }
