@@ -33,6 +33,12 @@ public class LotServiceImp implements LotService {
     }
 
     @Override
+    public LotResponseDTO get(String lotCode) {
+        Lot lot = lotRepository.findByCode(lotCode).orElseThrow(() -> new InvalidException(env.getProperty("lot.notExisted")));
+        return LotMapper.INSTANCE.lotToLotResponseDTO(lot);
+    }
+
+    @Override
     public void create(LotRequestDTO lotRequestDTO) {
         Lot lot = LotMapper.INSTANCE.lotRequestDTOtoLot(lotRequestDTO);
         Product product = productRepository.findById(lotRequestDTO.getProductId()).orElseThrow(() -> new InvalidException(env.getProperty("product.notExisted")));
