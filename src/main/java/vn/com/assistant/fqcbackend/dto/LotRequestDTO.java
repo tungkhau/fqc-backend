@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
 public class LotRequestDTO {
     @Size(min = 1, max = 16, message = "{lot.code.size}")
     private String code;
+    @Min(value = 0, message = "{expectedQuantity.inValid}")
     private Integer expectedQuantity;
+    @Min(value = 0, message = "{expectedWeight.inValid}")
     private Integer expectedWeight;
     @Size(min = 1, max = 16, message = "{lot.orderCode.size}")
     private String orderCode;
