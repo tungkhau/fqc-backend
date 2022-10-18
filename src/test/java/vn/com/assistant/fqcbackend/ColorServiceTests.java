@@ -18,7 +18,6 @@ import vn.com.assistant.fqcbackend.repository.ColorRepository;
 import vn.com.assistant.fqcbackend.repository.CustomerRepository;
 import vn.com.assistant.fqcbackend.service.imp.ColorServiceImp;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

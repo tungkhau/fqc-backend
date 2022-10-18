@@ -1,7 +1,10 @@
 package vn.com.assistant.fqcbackend.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +16,11 @@ import vn.com.assistant.fqcbackend.dto.ResponseBodyDTO;
 import java.util.Objects;
 
 @RestControllerAdvice
+@PropertySource(value = "classpath:fieldSiteMap.properties", encoding = "UTF-8")
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final Environment env;
 
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
@@ -50,6 +57,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseBodyDTO dataIntegrityViolationException(DataIntegrityViolationException ex) {
         String constraint = ((ConstraintViolationException) ex.getCause()).getConstraintName();
+        if (env.containsProperty(constraint)){
+            constraint = env.getProperty(constraint);
+        }
         return new ResponseBodyDTO(constraint + " đã tồn tại", "INVALID", null);
     }
 
