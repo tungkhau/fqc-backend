@@ -14,8 +14,10 @@ public class LotRequestDTO {
     @Size(min = 1, max = 16, message = "{lot.code.size}")
     private String code;
     @Min(value = 0, message = "{expectedQuantity.inValid}")
+    @NotNull(message = "{lot.expectedQuantity.notBlank}")
     private Integer expectedQuantity;
     @Min(value = 0, message = "{expectedWeight.inValid}")
+    @NotNull(message = "{lot.expectedWeight.notBlank}")
     private Integer expectedWeight;
     @Size(min = 1, max = 16, message = "{lot.orderCode.size}")
     private String orderCode;

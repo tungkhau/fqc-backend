@@ -3,14 +3,17 @@ package vn.com.assistant.fqcbackend.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Setter
 @Getter
 public class CustomerRequestDTO {
     @Size(min = 3, max = 3, message = "{customer.code.size}")
+    @NotBlank(message = "{customer.code.notBlank}")
     private String code;
     @Size(min = 1, max = 16, message = "{customer.name.size}")
+    @NotBlank(message = "{customer.name.notBlank}")
     private String name;
     @Size(min = 1, max = 50, message = "{customer.fullName.size}")
     private String fullName;

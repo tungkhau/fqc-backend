@@ -90,7 +90,7 @@ public class CriterionServiceTests {
     void testCreateFailedGradeListEmpty(){
         //given
         CriterionRequestDTO requestDTO = genMockCriteriaRequest();
-        requestDTO.setGrades(new ArrayList<>());
+        requestDTO.setGradeRequestDTOList(new ArrayList<>());
 
         when(env.getProperty("criterion.create.invalidGradeList")).thenReturn("Msg");
         //when and then

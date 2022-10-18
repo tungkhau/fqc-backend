@@ -11,14 +11,10 @@ public class LotResponseDTO {
     private Integer expectedQuantity;
     private Integer expectedWeight;
     private String orderCode;
-
     private String fabricCode;
     private String fabricName;
-
     private String colorCode;
     private String colorName;
-
     private String customerName;
-
     private MeasurementResponseDTO measurement;
 }
